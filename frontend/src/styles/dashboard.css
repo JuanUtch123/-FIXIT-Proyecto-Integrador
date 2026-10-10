@@ -1,0 +1,46 @@
+.dash-main { max-width: 1240px; margin: auto; padding: 28px 32px 48px; }
+.dash-titulo h1,.leader-titulo h1 { margin:0; font-size:42px; }
+.dash-titulo p,.leader-titulo p { margin:5px 0 26px; color:#acd8ee; font-size:18px; }
+.metricas { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.metricas article { min-height:132px; display:flex; align-items:center; justify-content:center; gap:30px; padding:20px; border:1px solid rgba(0,181,239,.4); border-radius:14px; background:linear-gradient(135deg,rgba(4,45,74,.7),rgba(2,29,50,.8)); }
+.metricas svg { width:72px; height:72px; color:#0bb8ff; fill:rgba(11,184,255,.16); }
+.metricas .estrella { color:#ffc21c; fill:#ffc21c; }
+.metricas span { display:block; color:#c4deed; font-size:18px; }
+.metricas strong { display:block; margin-top:4px; font-size:40px; }
+.graficas-grid { display:grid; grid-template-columns:1.15fr 1fr; gap:18px; margin-top:20px; }
+.dash-panel { border:1px solid rgba(0,181,239,.4); border-radius:14px; background:linear-gradient(135deg,rgba(4,45,74,.72),rgba(2,29,50,.82)); }
+.dash-panel h2 { margin:0; font-size:25px; }
+.graficas-grid>.dash-panel { min-height:302px; padding:22px 24px; }
+.grafica-barras { height:220px; display:flex; gap:12px; margin-top:12px; }
+.eje { width:32px; display:flex; flex-direction:column; justify-content:space-between; padding-bottom:26px; color:#d1e6f2; }
+.barras { flex:1; display:flex; align-items:flex-end; justify-content:space-around; gap:15px; padding:0 10px 0; border-left:1px solid #46718c; border-bottom:1px solid #46718c; background:repeating-linear-gradient(to bottom,transparent 0,transparent 52px,rgba(81,132,161,.18) 53px); }
+.barra-col { height:100%; flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:8px; }
+.barra { width:min(45px,80%); border-radius:4px 4px 0 0; background:linear-gradient(#17d2fc,#058ee9); box-shadow:0 0 15px rgba(0,190,255,.18); }
+.barra-col span { height:18px; color:#d5e8f2; }
+.pastel-wrap { display:flex; align-items:center; justify-content:center; gap:30px; margin-top:24px; }
+.pastel { width:190px; height:190px; display:grid; place-items:center; border-radius:50%; background:conic-gradient(#1aaaf0 0 40%,#2dd79a 40% 65%,#ffd42b 65% 85%,#ff9155 85%); }
+.pastel>div { width:98px; height:98px; display:grid; place-content:center; text-align:center; border-radius:50%; background:#062038; }
+.pastel strong { font-size:30px; }.pastel span { font-size:18px; }
+.pastel-wrap ul { min-width:190px; list-style:none; padding:0; margin:0; }
+.pastel-wrap li { display:grid; grid-template-columns:18px 1fr auto; align-items:center; gap:10px; margin:15px 0; color:#d4e6f0; }
+.pastel-wrap i { width:16px; height:16px; border-radius:50%; }.pantalla{background:#1aaaf0}.bateria{background:#2dd79a}.teclado{background:#ffd42b}.otros{background:#ff9155}
+.tabla-panel { margin-top:18px; padding:20px 24px; }.panel-head,.ranking-head { display:flex; justify-content:space-between; align-items:center; }
+.panel-head button { border:0; color:#04e5ec; background:none; font-size:16px; text-decoration:underline; cursor:pointer; }
+.tabla-scroll { overflow-x:auto; } table { width:100%; margin-top:15px; border-collapse:collapse; }
+th,td { padding:11px 15px; text-align:left; white-space:nowrap; } th { color:#a9ceea; font-weight:500; }
+tbody tr:nth-child(odd) { background:rgba(12,61,91,.45); } tbody tr { border-bottom:1px solid rgba(255,255,255,.025); }
+.completada { display:flex; align-items:center; gap:8px; color:#2cde94; }.completada svg { width:21px; }
+.leader-titulo { display:flex; justify-content:space-between; align-items:flex-start; }.leader-titulo button { width:48px;height:48px;border:1px solid #14769c;border-radius:50%;color:#13ccf2;background:#082b45;cursor:pointer; }
+.jugador-destacado { display:grid; grid-template-columns:auto auto 1fr auto; align-items:center; gap:20px; padding:22px 30px; border:1px solid #167aa3; border-radius:16px 16px 0 0; background:linear-gradient(100deg,rgba(8,66,100,.9),rgba(3,31,51,.9)); }
+.jugador-destacado>img { width:78px;height:78px;border:2px solid #08caf3;border-radius:50%;object-fit:cover;background:#164762; }
+.jugador-destacado h2 { margin:0 0 5px;font-size:26px; }.jugador-destacado p { display:flex;align-items:center;gap:7px;margin:0;color:#b9d8e7; }.jugador-destacado p svg { width:19px; }
+.puesto { align-self:stretch;display:grid;place-items:center;color:#ffd638; }.puesto svg { width:36px;height:36px;fill:#ffd638; }.puesto strong { font-size:20px; }
+.nivel-rank { text-align:center;padding-left:30px;border-left:1px solid #1b6382; }.nivel-rank span { display:block;color:#aed0e2; }.nivel-rank strong { font-size:40px;color:#10d8f5; }
+.ranking-panel { border-radius:0 0 14px 14px;padding:24px 28px; }.ranking-head span { color:#8fbdd3; }
+.ranking-tabla th svg { width:17px;vertical-align:middle; }.ranking-tabla td { padding-top:9px;padding-bottom:9px; }
+.jugador-celda { display:flex;align-items:center;gap:12px; }.jugador-celda img { width:38px;height:38px;border:1px solid #db4555;border-radius:50%;object-fit:cover;background:#173e55; }
+.posicion { width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#123b55;font-weight:700; }.p1{background:#f2c02a;color:#132536}.p2{background:#cbd7dd;color:#132536}.p3{background:#ba7249;color:#fff}
+.puntos { color:#19dff0;font-weight:700; }
+
+@media(max-width:1000px){.metricas{grid-template-columns:1fr}.graficas-grid{grid-template-columns:1fr}.pastel-wrap{flex-wrap:wrap}.jugador-destacado{grid-template-columns:auto auto 1fr}.nivel-rank{grid-column:1/-1;border-left:0;border-top:1px solid #1b6382;padding:14px 0 0}}
+@media(max-width:760px){.dash-main{padding:22px 14px 36px}.dash-titulo h1,.leader-titulo h1{font-size:34px}.metricas article{min-height:105px;justify-content:flex-start}.metricas svg{width:55px;height:55px}.metricas strong{font-size:32px}.graficas-grid>.dash-panel{padding:18px 12px}.grafica-barras{overflow-x:auto}.barras{min-width:480px}.tabla-panel,.ranking-panel{padding:18px 12px}.jugador-destacado{padding:18px 14px;gap:12px}.jugador-destacado>img{width:60px;height:60px}.puesto{display:none}.leader-titulo p{font-size:15px}}

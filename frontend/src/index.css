@@ -1,0 +1,83 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #041d33;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.install-pwa-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 22px;
+  border: 1px solid rgba(0, 213, 255, 0.7);
+  border-radius: 14px;
+
+  color: #ffffff;
+  background: linear-gradient(135deg, #00cfff, #087cff);
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px rgba(0, 174, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.install-pwa-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.install-pwa-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 14px 35px rgba(0, 174, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.install-pwa-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .install-pwa-button {
+    right: 16px;
+    bottom: 16px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}

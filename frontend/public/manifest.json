@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "Fix IT!",
+  "short_name": "Fix IT!",
+  "description": "Juego interactivo para aprender a diagnosticar y reparar computadoras.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "orientation": "any",
+  "background_color": "#00182b",
+  "theme_color": "#00bff3",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
