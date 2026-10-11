@@ -1,47 +1,65 @@
 # Fix IT! — Backend REST API
 
-Backend del proyecto integrador **Fix IT!**, un videojuego cooperativo multijugador local en el que los jugadores asumen el rol de pasantes de Tecnologías de la Información (TI), encargados de diagnosticar, reparar y ensamblar computadoras bajo presión de tiempo.
+## 1. Descripción del proyecto
 
-El backend gestiona la información de los jugadores, la autenticación, las estadísticas acumuladas, el progreso y el registro histórico de partidas mediante una arquitectura basada en microservicios REST.
+**Fix IT!** es un proyecto integrador orientado al aprendizaje del diagnóstico, mantenimiento y reparación de equipos de cómputo mediante una experiencia de videojuego cooperativo.
 
-## 1. Arquitectura del backend
+El backend proporciona los servicios necesarios para administrar usuarios, autenticar credenciales, registrar sesiones de juego, almacenar estadísticas y consultar el progreso de los jugadores.
 
-La solución se encuentra organizada en tres microservicios desarrollados con **Node.js, Express y Mongoose**.
+Como parte de la propuesta de una **Aplicación Web Progresiva (PWA)**, el backend expone una API REST que permite recuperar información en formato JSON para su representación dinámica en una interfaz web.
+
+La solución utiliza una arquitectura basada en tres microservicios desarrollados con **Node.js, Express y Mongoose**, utilizando MongoDB para la persistencia de datos.
+
+## 2. Objetivo de la arquitectura
+
+Diseñar y documentar una arquitectura de servicios REST que permita conectar una PWA con la información del videojuego Fix IT!, contemplando:
+
+- Recuperación de datos mediante solicitudes HTTP.
+- Intercambio de información en formato JSON.
+- Consulta de perfiles, estadísticas, progreso y resultados.
+- Obtención de listas dinámicas de jugadores y sesiones.
+- Separación de responsabilidades entre microservicios.
+- Persistencia de información mediante MongoDB.
+
+Esta arquitectura permite que la PWA obtenga datos del backend y actualice su interfaz sin necesidad de recargar completamente la página.
+
+## 3. Arquitectura del backend
+
+El sistema se organiza en tres microservicios independientes, cada uno con responsabilidades específicas.
 
 | Microservicio | Puerto predeterminado | Responsabilidad |
 |---|---|---|
-| User Service | `3001` | Registro, autenticación, perfiles y estadísticas acumuladas. |
-| Progress Service | `3002` | Consulta y actualización del progreso y mejores resultados de los jugadores. |
-| Session Service | `3003` | Registro de partidas y coordinación de estadísticas y progreso. |
+| User Service | `3001` | Registro, inicio de sesión, perfiles, estadísticas acumuladas y clasificación de jugadores. |
+| Progress Service | `3002` | Consulta y actualización del progreso de los jugadores. |
+| Session Service | `3003` | Registro histórico de sesiones, consulta de partidas y generación de resúmenes. |
 
-### Comunicación entre servicios
+### 3.1 Diagrama de arquitectura
 
 ```text
-                     CLIENTE
-                 (Videojuego/PWA)
-                        |
-                    HTTP/JSON
-                        |
-           +------------+------------+
-           |            |            |
-           v            v            v
-      User Service  Session Service  Progress Service
-         :3001          :3003            :3002
-           ^              |                ^
-           |              |                |
-           +--------------+----------------+
-                  HTTP REST interno
-
-               Persistencia MongoDB
+                       PWA / Videojuego
+                              |
+                         HTTP / JSON
+                              |
+               +--------------+--------------+
+               |              |              |
+               v              v              v
+          User Service   Progress Service  Session Service
+             :3001            :3002           :3003
+               ^                                |
+               |                                |
+               +--------- HTTP / REST ----------+
+                              |
+                              v
+                       MongoDB
 ```
 
-Session Service actúa como coordinador cuando se registra una partida. Después de guardar sus datos, solicita las actualizaciones correspondientes a User Service y Progress Service.
+Cada servicio administra sus operaciones mediante modelos Mongoose y conexiones MongoDB configurables.
 
-Los servicios utilizan solicitudes HTTP y respuestas JSON para intercambiar información.
+Session Service también se comunica con User Service y Progress Service para actualizar información relacionada con las partidas registradas.
 
-### Arquitectura interna
+### 3.2 Arquitectura interna
 
-Los microservicios siguen una organización por capas:
+Los microservicios utilizan una separación por capas:
 
 ```text
 HTTP Request
@@ -59,113 +77,69 @@ HTTP Request
  Repository
      |
      v
- MongoDB
+ Mongoose Model
+     |
+     v
+   MongoDB
 ```
 
-- **Route:** define los endpoints y métodos HTTP.
-- **Controller:** administra las solicitudes y respuestas HTTP.
-- **Service:** implementa las reglas de negocio.
-- **Repository:** realiza operaciones sobre la base de datos.
-- **Model:** define los esquemas de Mongoose.
-- **Validator:** valida los datos recibidos.
+**Responsabilidades de las capas:**
 
-## 2. Estructura del backend
-
-```text
-backend/
-├── user-service/
-│   ├── server.js
-│   ├── package.json
-│   └── src/
-│       ├── app.js
-│       ├── config/
-│       ├── controllers/
-│       ├── models/
-│       ├── repositories/
-│       ├── routes/
-│       ├── services/
-│       └── validators/
-│
-├── progress-service/
-│   ├── server.js
-│   ├── package.json
-│   └── src/
-│       ├── app.js
-│       ├── config/
-│       ├── controllers/
-│       ├── models/
-│       ├── repositories/
-│       ├── routes/
-│       ├── services/
-│       └── validators/
-│
-├── session-service/
-│   ├── server.js
-│   ├── package.json
-│   └── src/
-│       ├── app.js
-│       ├── clients/
-│       ├── config/
-│       ├── controllers/
-│       ├── models/
-│       ├── repositories/
-│       ├── routes/
-│       ├── services/
-│       └── validators/
-│
-└── README.md
-```
-
-Esta estructura corresponde al diseño de nuestra implementación de referencia. Las carpetas adicionales del repositorio unificado deberán documentarse según su función real.
-
-## 3. Tecnologías utilizadas
-
-| Tecnología | Función |
+| Capa | Responsabilidad |
 |---|---|
-| Node.js | Entorno de ejecución JavaScript. |
-| Express | Implementación de servicios REST. |
-| MongoDB | Persistencia documental. |
+| Route | Define los endpoints y métodos HTTP. |
+| Controller | Recibe solicitudes y devuelve respuestas HTTP. |
+| Service | Aplica validaciones y reglas de negocio. |
+| Repository | Ejecuta consultas y actualizaciones de datos. |
+| Model | Define la estructura de los documentos MongoDB mediante Mongoose. |
+
+Los servicios también utilizan validación de datos. Su ubicación concreta depende del microservicio: algunas comprobaciones se realizan en módulos `validators` y otras directamente en la capa Service.
+
+## 4. Tecnologías utilizadas
+
+| Tecnología | Propósito |
+|---|---|
+| Node.js | Ejecución del backend en JavaScript. |
+| Express | Implementación de las APIs REST. |
+| MongoDB | Almacenamiento documental. |
 | Mongoose | Modelado y acceso a MongoDB. |
-| Argon2id | Hash seguro de contraseñas. |
-| JSON Web Token (JWT) | Emisión de tokens de autenticación. |
-| dotenv | Configuración mediante variables de entorno. |
-| Postman | Pruebas y validación de endpoints. |
-| Git/GitHub | Control de versiones. |
+| JavaScript ES Modules | Organización del código mediante módulos. |
+| `node:crypto` | Generación y verificación de hashes de contraseñas mediante `scrypt`. |
+| dotenv | Administración de variables de entorno. |
+| Fetch API | Comunicación HTTP entre microservicios. |
+| Postman | Pruebas manuales de endpoints. |
+| Git y GitHub | Control de versiones. |
 
-## 4. Persistencia y modelos de datos
+## 5. Modelo de persistencia
 
-La persistencia se implementa mediante MongoDB y modelos Mongoose.
+La persistencia utiliza MongoDB y tres colecciones principales.
 
-En la configuración original del backend se utilizaron bases lógicas separadas dentro de MongoDB Atlas. La integración del proyecto podrá utilizar otra configuración de bases de datos, siempre que mantenga correctamente la propiedad de los datos de cada servicio.
-
-| Microservicio | Colección | Información |
+| Colección | Microservicio responsable | Información almacenada |
 |---|---|---|
-| User Service | `users` | Identidad, credenciales protegidas y estadísticas acumuladas. |
-| Progress Service | `user_progress` | Progreso por mundos, niveles, puntuación máxima y estrellas. |
-| Session Service | `game_sessions` | Registro histórico de partidas y resultados. |
+| `users` | User Service | Usuarios, credenciales protegidas y estadísticas. |
+| `user_progress` | Progress Service | Progreso organizado por mundos y niveles. |
+| `game_sessions` | Session Service | Historial y resultados de las partidas. |
 
-### User
+La configuración del servidor y de la base de datos se establece mediante `MONGO_URI`. Por lo tanto, el backend puede utilizar una instancia MongoDB local o remota, siempre que las conexiones estén correctamente configuradas.
 
-Un documento de usuario contiene información de identificación y estadísticas:
+### 5.1 Usuarios
 
-```json
-{
-  "username": "Jugador1",
-  "email": "jugador@example.com",
-  "stats": {
-    "totalGamesPlayed": 0,
-    "totalTicketsCompleted": 0,
-    "totalTicketsFailed": 0,
-    "totalPlayTimeSeconds": 0
-  }
-}
-```
+Cada usuario dispone de datos de identificación y estadísticas acumuladas.
 
-Las cuentas registradas mediante la API almacenan un campo `passwordHash` generado con Argon2id. Las contraseñas originales nunca deben almacenarse en texto plano ni devolverse en respuestas HTTP.
+Entre los campos de estadísticas se encuentran:
 
-### Progress
+- `totalGamesPlayed`: partidas jugadas.
+- `totalTicketsCompleted`: tickets completados.
+- `totalTicketsFailed`: tickets fallidos.
+- `totalPlayTimeSeconds`: tiempo acumulado de juego.
+- `totalScore`: puntuación acumulada.
+- `totalStars`: estrellas acumuladas.
 
-El progreso se organiza por identificadores de mundo y nivel:
+Las contraseñas no se almacenan en texto plano. User Service utiliza `node:crypto.scrypt` con salt aleatorio para generar y verificar hashes.
+
+### 5.2 Progreso
+
+El progreso se organiza por identificadores de mundo y nivel.
 
 ```json
 {
@@ -182,206 +156,282 @@ El progreso se organiza por identificadores de mundo y nivel:
 }
 ```
 
-`bestScore` y `bestStars` conservan sus valores máximos de manera independiente.
+Progress Service conserva de forma independiente la mejor puntuación y la mayor cantidad de estrellas alcanzadas por nivel.
 
-### Session
+### 5.3 Sesiones de juego
 
-Cada sesión registra información de la partida:
+Session Service conserva registros históricos de las partidas.
 
-```json
-{
-  "levelId": "1-1",
-  "worldId": "world_1",
-  "players": ["6aab11e2e164cb11eb8b7a25"],
-  "score": 1250,
-  "starsEarned": 3,
-  "ticketsCompleted": 6,
-  "ticketsFailed": 1,
-  "durationSeconds": 180
-}
+Los datos incluyen identificadores de jugadores, mundo, nivel, puntuación, estrellas, tickets completados o fallidos y duración.
+
+El modelo también contempla información relacionada con el equipo reparado, tipo de reparación, estado de finalización y fecha de juego.
+
+Estos datos permiten elaborar consultas históricas y resúmenes para su presentación en la PWA.
+
+## 6. Consumo de API REST
+
+La comunicación entre la PWA y el backend se plantea mediante solicitudes HTTP a endpoints REST.
+
+Cada solicitud sigue el flujo general:
+
+```text
+PWA
+ |
+ | Solicitud HTTP
+ v
+Endpoint REST
+ |
+ v
+Controller / Service
+ |
+ v
+Repository
+ |
+ v
+MongoDB
+ |
+ | Datos consultados
+ v
+Respuesta JSON
+ |
+ v
+PWA
+ |
+ v
+Actualización dinámica de la interfaz
 ```
 
-El campo `players` permite registrar los identificadores de los participantes de una partida cooperativa.
+La aplicación cliente podrá utilizar los datos recibidos para mostrar perfiles, tablas, estadísticas y listas de resultados.
 
-## 5. Endpoints REST
+### 6.1 User Service
 
-### User Service — Puerto 3001
+**URL local predeterminada:** `http://localhost:3001`
 
-| Método | Endpoint | Descripción |
+| Método | Endpoint | Función |
 |---|---|---|
 | GET | `/health` | Consultar el estado del servicio. |
-| POST | `/users/register` | Registrar un usuario. |
-| POST | `/users/login` | Iniciar sesión y obtener un JWT. |
-| GET | `/users/:id` | Consultar perfil. |
-| GET | `/users/:id/stats` | Consultar estadísticas acumuladas. |
-| PATCH | `/users/:id/stats` | Incrementar estadísticas. |
+| POST | `/users/register` | Registrar un nuevo usuario. |
+| POST | `/users/login` | Verificar credenciales e iniciar sesión. |
+| GET | `/users/:id` | Consultar el perfil de un jugador. |
+| GET | `/users/:id/stats` | Recuperar estadísticas acumuladas. |
+| PATCH | `/users/:id/stats` | Incrementar estadísticas del jugador. |
+| GET | `/users/leaderboard` | Recuperar la clasificación de jugadores. |
 
-### Progress Service — Puerto 3002
+El endpoint de leaderboard devuelve hasta 20 jugadores, ordenados principalmente por puntuación acumulada (`totalScore`) y posteriormente por tickets completados (`totalTicketsCompleted`), ambos en orden descendente.
 
-| Método | Endpoint | Descripción |
+El resultado permite construir una tabla o lista dinámica de clasificación.
+
+### 6.2 Progress Service
+
+**URL local predeterminada:** `http://localhost:3002`
+
+| Método | Endpoint | Función |
 |---|---|---|
 | GET | `/health` | Consultar el estado del servicio. |
-| GET | `/progress/:userId` | Consultar progreso de un jugador. |
-| PATCH | `/progress/:userId` | Actualizar mejores resultados. |
+| GET | `/progress/:userId` | Recuperar el progreso de un jugador. |
+| PATCH | `/progress/:userId` | Actualizar puntuación y estrellas máximas por nivel. |
 
-### Session Service — Puerto 3003
+El endpoint de consulta devuelve una estructura organizada por mundos y niveles.
 
-| Método | Endpoint | Descripción |
+La PWA podrá transformar esta información en listas o tarjetas que presenten los resultados obtenidos por el jugador.
+
+### 6.3 Session Service
+
+**URL local predeterminada:** `http://localhost:3003`
+
+| Método | Endpoint | Función |
 |---|---|---|
 | GET | `/health` | Consultar el estado del servicio. |
-| POST | `/sessions` | Registrar partida y ejecutar la sincronización correspondiente. |
+| POST | `/sessions` | Registrar una partida. |
+| GET | `/sessions/user/:userId` | Consultar las sesiones recientes de un jugador. |
+| GET | `/sessions/user/:userId/summary` | Recuperar información resumida de sus sesiones. |
 
-**Alcance:** la implementación de referencia no incluye `GET /sessions` para recuperar una lista general del historial ni un endpoint de leaderboard. Estas funcionalidades pueden incorporarse posteriormente o estar presentes en versiones modificadas por el equipo.
+El historial por usuario devuelve hasta 20 sesiones ordenadas por fecha de juego descendente.
 
-## 6. Registro y autenticación
+El endpoint de resumen proporciona información agrupada en:
 
-El sistema dispone de Authentication V1 mediante Argon2id y JWT.
+| Propiedad | Descripción |
+|---|---|
+| `repairTypes` | Información agrupada por tipos de reparación. |
+| `weekly` | Distribución de actividad por día de la semana. |
+| `recent` | Lista de hasta cinco sesiones recientes. |
 
-### Registro de usuario
+La información `weekly` agrupa las sesiones históricas por día de la semana; no representa exclusivamente la semana calendario actual.
+
+Actualmente, el backend no implementa un endpoint general `GET /sessions` sin identificador de usuario.
+
+## 7. Propuesta de recuperación y renderizado dinámico
+
+Para cumplir el objetivo de consumo de API de la PWA, se propone utilizar los endpoints de consulta existentes y transformar sus respuestas JSON en elementos visuales.
+
+### 7.1 Leaderboard
+
+**Origen de datos:**
+
+```http
+GET http://localhost:3001/users/leaderboard
+```
+
+**Proceso propuesto:**
+
+1. La PWA solicita la clasificación a User Service.
+2. El servicio consulta MongoDB y recupera los jugadores ordenados.
+3. El backend devuelve un arreglo JSON.
+4. El frontend procesa los registros.
+5. La interfaz genera dinámicamente las filas de clasificación.
+
+**Información que podrá representarse:**
+
+| Posición | Jugador | Puntuación | Tickets completados |
+|---|---|---|---|
+| 1 | Jugador A | 5000 | 25 |
+| 2 | Jugador B | 4200 | 21 |
+| 3 | Jugador C | 3500 | 18 |
+
+*Los valores de esta tabla son ilustrativos y no representan registros reales de MongoDB.*
+
+### 7.2 Historial de partidas
+
+**Origen de datos:**
+
+```http
+GET http://localhost:3003/sessions/user/:userId
+```
+
+La PWA podrá recuperar las sesiones del jugador y presentar una lista con sus resultados, fechas, puntuaciones y duración.
+
+La lista se actualizará al recuperar información nueva del servicio.
+
+### 7.3 Progreso por niveles
+
+**Origen de datos:**
+
+```http
+GET http://localhost:3002/progress/:userId
+```
+
+El frontend podrá recorrer los mundos y niveles recibidos para construir una lista dinámica de récords.
+
+Cada elemento podrá mostrar el identificador del nivel, la mejor puntuación y el máximo de estrellas obtenidas.
+
+### 7.4 Estados de la interfaz
+
+La propuesta contempla cuatro estados durante el consumo de las APIs:
+
+| Estado | Comportamiento esperado |
+|---|---|
+| Carga | Mostrar un indicador mientras se recupera información. |
+| Éxito | Representar los datos devueltos por la API. |
+| Sin resultados | Informar que todavía no existen registros disponibles. |
+| Error | Mostrar un mensaje cuando falle la solicitud o el servicio. |
+
+Esta separación permitirá comunicar al usuario el estado de recuperación de información sin depender de recargas completas de página.
+
+## 8. Registro e inicio de sesión
+
+User Service permite registrar usuarios y verificar sus credenciales.
+
+### 8.1 Registro
 
 ```http
 POST http://localhost:3001/users/register
 Content-Type: application/json
 ```
 
+**Ejemplo de solicitud:**
+
 ```json
 {
   "username": "Jugador1",
   "email": "jugador@example.com",
-  "password": "Clave de ejemplo 123"
+  "password": "clave-de-demostracion"
 }
 ```
 
-**Respuesta esperada:** HTTP `201 Created`.
+El backend valida los campos, comprueba la disponibilidad del correo y registra las credenciales utilizando un hash generado con `scrypt`.
 
-El servicio valida los datos, normaliza el email, verifica duplicados, genera el hash de contraseña y crea un usuario con estadísticas iniciales en cero.
+El registro exitoso responde con HTTP `201` y un objeto `user` con información pública.
 
-### Inicio de sesión
+La implementación actual contempla unicidad de correo y nombre de usuario en el modelo, aunque no todos los errores de duplicidad están normalizados al mismo código HTTP.
+
+### 8.2 Inicio de sesión
 
 ```http
 POST http://localhost:3001/users/login
 Content-Type: application/json
 ```
 
+**Ejemplo de solicitud:**
+
 ```json
 {
   "email": "jugador@example.com",
-  "password": "Clave de ejemplo 123"
+  "password": "clave-de-demostracion"
 }
 ```
 
-**Respuesta esperada:** HTTP `200 OK`.
+Después de validar las credenciales, el servicio devuelve información pública del usuario.
+
+**Estructura de respuesta:**
 
 ```json
 {
-  "message": "Login successful",
-  "accessToken": "[JWT_GENERADO]",
-  "tokenType": "Bearer",
-  "expiresIn": "1h",
   "user": {
-    "id": "ID_DEL_USUARIO",
+    "_id": "ID_DEL_USUARIO",
     "username": "Jugador1",
     "email": "jugador@example.com"
   }
 }
 ```
 
-El JWT utiliza HS256 y contiene el identificador del usuario en `sub`, además de los campos estándar de emisión y expiración.
+El documento puede contener otros campos públicos, como estadísticas y fecha de creación.
 
-La emisión del JWT está implementada. **La validación de tokens para autorizar el acceso a endpoints protegidos constituye una etapa posterior**, según el alcance de Authentication V1.
+**Estado actual de seguridad:** el login no emite JWT y los endpoints no disponen de middleware de autorización basado en tokens. La incorporación de JWT y la protección de operaciones son mejoras futuras.
 
-### Respuestas de autenticación
+## 9. Actualización de estadísticas
 
-| Situación | Estado HTTP |
-|---|---|
-| Registro exitoso | `201` |
-| Login exitoso | `200` |
-| Datos inválidos | `400` |
-| Credenciales incorrectas | `401` |
-| Email registrado previamente | `409` |
-
-Las respuestas de login incorrecto no deben revelar si el correo existe o si la contraseña es errónea.
-
-## 7. Estadísticas y progreso
-
-### Consultar estadísticas
+User Service permite incrementar los valores acumulados del jugador mediante:
 
 ```http
-GET http://localhost:3001/users/ID_DEL_USUARIO/stats
-```
-
-La respuesta proporciona información acumulada del usuario:
-
-```json
-{
-  "_id": "ID_DEL_USUARIO",
-  "stats": {
-    "totalGamesPlayed": 10,
-    "totalTicketsCompleted": 45,
-    "totalTicketsFailed": 5,
-    "totalPlayTimeSeconds": 3600
-  }
-}
-```
-
-El frontend puede utilizar estos valores para representar métricas y listas dinámicas.
-
-### Actualizar estadísticas
-
-```http
-PATCH http://localhost:3001/users/ID_DEL_USUARIO/stats
+PATCH http://localhost:3001/users/:id/stats
 Content-Type: application/json
 ```
+
+**Ejemplo de solicitud:**
 
 ```json
 {
   "gamesPlayed": 1,
   "ticketsCompleted": 6,
   "ticketsFailed": 1,
-  "playTimeSeconds": 180
+  "playTimeSeconds": 180,
+  "score": 1250,
+  "stars": 3
 }
 ```
 
-Los valores representan **incrementos**, no sustituciones de los totales almacenados.
+La implementación actual requiere los seis campos numéricos, utilizando valores enteros no negativos.
 
-### Consultar progreso
+Las operaciones incrementan los valores previamente almacenados mediante `$inc` de MongoDB, en lugar de sustituir las estadísticas acumuladas.
 
-```http
-GET http://localhost:3002/progress/ID_DEL_USUARIO
-```
+## 10. Registro de sesiones e integración entre servicios
 
-### Actualizar progreso
-
-```http
-PATCH http://localhost:3002/progress/ID_DEL_USUARIO
-Content-Type: application/json
-```
-
-```json
-{
-  "worldId": "world_1",
-  "levelId": "1-1",
-  "score": 1500,
-  "starsEarned": 3
-}
-```
-
-El servicio conserva el máximo histórico de puntuación y estrellas correspondiente a cada nivel.
-
-## 8. Registro de partidas y sincronización
-
-El videojuego o PWA puede enviar resultados al finalizar una partida:
+Session Service permite registrar los resultados de una partida mediante:
 
 ```http
 POST http://localhost:3003/sessions
 Content-Type: application/json
 ```
 
+**Ejemplo de solicitud:**
+
 ```json
 {
   "levelId": "1-1",
   "worldId": "world_1",
-  "players": ["6aab11e2e164cb11eb8b7a25"],
+  "players": [
+    "ID_DEL_JUGADOR"
+  ],
   "score": 1250,
   "starsEarned": 3,
   "ticketsCompleted": 6,
@@ -390,102 +440,96 @@ Content-Type: application/json
 }
 ```
 
-### Flujo de sincronización
+### Flujo de procesamiento
 
-1. Session Service valida los datos de la partida.
-2. Verifica que no se repitan identificadores dentro de `players`.
-3. Registra la sesión en MongoDB.
-4. Actualiza las estadísticas del usuario mediante User Service.
-5. Actualiza los mejores resultados mediante Progress Service.
-6. Devuelve el resultado de la sincronización.
+1. Session Service recibe los datos y realiza las validaciones disponibles.
+2. Registra la sesión en MongoDB.
+3. Envía solicitudes HTTP para actualizar los datos en User Service y Progress Service.
+4. Espera los resultados mediante `Promise.allSettled`.
+5. Devuelve una respuesta de creación de sesión.
 
-En la integración original se verificó el registro exitoso de sesiones con respuesta `201`.
+La comunicación con los servicios se ejecuta de manera concurrente.
 
-### Manejo de errores parciales
+### Alcance de la sincronización
 
-El sistema no implementa transacciones distribuidas entre los tres servicios.
+La implementación actual registra primero la sesión, pero no proporciona una transacción distribuida que garantice la actualización conjunta de todos los servicios.
 
-Si ocurre un fallo después de persistir la sesión, esta puede conservarse aunque parte de las estadísticas o del progreso no se haya actualizado.
+El resultado HTTP `201` confirma la creación de la sesión, pero no garantiza que todas las actualizaciones de estadísticas y progreso hayan concluido exitosamente.
 
-La implementación de referencia comunica estas situaciones mediante una respuesta HTTP `502`, indicando que la sesión fue creada, pero la sincronización quedó incompleta.
+Tampoco existe una garantía completa de idempotencia. Enviar nuevamente una partida puede generar registros duplicados e incrementos adicionales.
 
-**Limitación conocida:** no se dispone todavía de un mecanismo completo de idempotencia o recuperación automática de sincronizaciones parciales. Reenviar una sesión puede generar registros y actualizaciones duplicados.
+Actualmente, la validación no garantiza la unicidad de los identificadores contenidos en `players`.
 
-## 9. Configuración del entorno
+Estas limitaciones se consideran oportunidades de mejora para futuras versiones del backend.
 
-Cada microservicio debe contar con sus propias variables de entorno.
+## 11. Configuración del entorno
 
-### Variables generales
+Los microservicios utilizan variables de entorno para configurar sus conexiones y ejecución.
 
-```dotenv
-PORT=3001
-MONGO_URI=CADENA_DE_CONEXION
-```
+### Variables utilizadas
 
-Los puertos varían según el servicio:
+| Variable | Servicios | Función |
+|---|---|---|
+| `MONGO_URI` | User, Progress, Session | Cadena de conexión a MongoDB. |
+| `PORT` | User, Progress, Session | Puerto de ejecución. |
+| `FRONTEND_URL` | User, Progress, Session | Origen permitido por la configuración CORS. |
+| `USER_SERVICE_URL` | Session | Dirección HTTP de User Service. |
+| `PROGRESS_SERVICE_URL` | Session | Dirección HTTP de Progress Service. |
 
-| Servicio | Puerto |
-|---|---|
-| User | `3001` |
-| Progress | `3002` |
-| Session | `3003` |
+Los tres servicios incluyen configuración CORS para permitir solicitudes desde el origen establecido mediante `FRONTEND_URL`.
 
-### User Service
+Las direcciones utilizadas durante el desarrollo pueden apuntar a `localhost`. Para un despliegue remoto se deberán configurar direcciones accesibles y conexiones seguras.
 
-Además de la configuración de MongoDB:
+Los archivos `.env` deben mantenerse fuera del control de versiones.
 
-```dotenv
-JWT_SECRET=SECRETO_ALEATORIO_SEGURO
-JWT_EXPIRES_IN=1h
-```
+No se deben publicar contraseñas, secretos ni cadenas de conexión reales.
 
-`JWT_SECRET` debe generarse mediante un mecanismo criptográficamente seguro y mantenerse fuera del repositorio.
+## 12. Instalación y ejecución
 
-### Session Service
+### 12.1 Requisitos
 
-```dotenv
-USER_SERVICE_URL=http://localhost:3001
-PROGRESS_SERVICE_URL=http://localhost:3002
-DOWNSTREAM_REQUEST_TIMEOUT_MS=5000
-```
+- Node.js compatible con las dependencias del proyecto (se recomienda Node.js 22 o posterior).
+- npm.
+- Instancia de MongoDB local o remota accesible.
+- Variables de entorno configuradas.
+- Postman u otro cliente HTTP para pruebas.
 
-Estas variables corresponden a la integración HTTP de referencia.
+### 12.2 Instalación de dependencias
 
-**Importante:** antes de ejecutar el repositorio unificado, se deben contrastar los nombres de las variables con el código actual, especialmente si se añadieron CORS, una base MongoDB local o nuevos scripts de inicialización.
-
-## 10. Instalación y ejecución local
-
-### Requisitos
-
-- Node.js y npm, en versiones compatibles con los `package.json`.
-- Acceso a MongoDB local o remoto, según la configuración utilizada.
-- Credenciales de conexión válidas.
-- Postman u otro cliente HTTP para realizar pruebas.
-
-### Instalación de dependencias
-
-Desde la carpeta `backend/`:
+Desde la carpeta `backend/`, instalar las dependencias de cada servicio:
 
 ```powershell
 cd user-service
 npm install
 ```
 
-Repetir la instalación en `progress-service` y `session-service`.
+Repetir el procedimiento para `progress-service` y `session-service`.
 
-### Ejecución
+### 12.3 Ejecución
 
-Abrir una terminal independiente para cada servicio y ejecutar:
+Cada microservicio se ejecuta en una terminal independiente, dentro de su carpeta:
 
 ```powershell
 npm run dev
 ```
 
-dentro de la carpeta correspondiente.
+También se encuentra disponible:
 
-Los servicios deben iniciarse en sus puertos configurados y establecer correctamente la conexión con MongoDB.
+```powershell
+npm start
+```
 
-### Verificación de disponibilidad
+Los puertos predeterminados son:
+
+| Servicio | Puerto |
+|---|---|
+| User Service | `3001` |
+| Progress Service | `3002` |
+| Session Service | `3003` |
+
+### 12.4 Comprobación de servicios
+
+La disponibilidad HTTP puede consultarse mediante:
 
 ```http
 GET http://localhost:3001/health
@@ -493,63 +537,83 @@ GET http://localhost:3002/health
 GET http://localhost:3003/health
 ```
 
-Posteriormente pueden verificarse los contratos REST con Postman.
+Los endpoints de salud permiten comprobar que cada aplicación responde a solicitudes HTTP, aunque no necesariamente realizan una comprobación de conectividad a MongoDB en cada petición.
 
-### Datos de demostración
+### 12.5 Datos de demostración
 
-Si la versión integrada incorpora un script `seed`, debe ejecutarse únicamente después de revisar su definición en `package.json`, las colecciones que modifica y sus efectos sobre los datos existentes.
+User Service dispone del comando:
 
-No se recomienda ejecutar scripts de inicialización o reinicio de datos sin comprobar previamente su comportamiento.
+```powershell
+npm run seed
+```
 
-## 11. Seguridad
+Este script crea datos de demostración para el proyecto.
 
-Se contemplan las siguientes medidas:
+**Advertencia:** el script elimina y vuelve a insertar determinados datos de demostración en las colecciones utilizadas por su conexión MongoDB.
 
-- Contraseñas protegidas mediante hash Argon2id.
-- Emisión de JWT con expiración.
-- Hashes y secretos excluidos de respuestas públicas.
-- Validaciones de datos de entrada.
-- Manejo de errores HTTP.
-- Credenciales almacenadas en variables de entorno.
-- Exclusión de `.env` y dependencias del control de versiones.
+No debe ejecutarse sobre información importante sin revisar previamente su comportamiento y el destino configurado.
+
+Cuando los microservicios utilizan bases lógicas diferentes, el script no inicializa automáticamente todas las bases de los demás servicios.
+
+## 13. Seguridad
+
+La implementación actual contempla:
+
+- Hash de contraseñas mediante `node:crypto.scrypt`.
+- Uso de salt aleatorio.
+- Comparación segura mediante `timingSafeEqual`.
+- Exclusión de hashes en las respuestas públicas de autenticación.
+- Validaciones de entrada en las operaciones REST.
+- Configuración CORS mediante origen permitido.
+- Configuración sensible mediante variables de entorno.
 
 ### Mejoras futuras
 
-- Verificación de JWT en endpoints protegidos.
-- Autorización por propietario del recurso.
-- Rate limiting para registro e inicio de sesión.
-- HTTPS en producción.
-- Configuración CORS restringida a los orígenes autorizados.
-- Recuperación de contraseñas.
-- Idempotencia y recuperación de sincronizaciones parciales.
-- Pruebas automatizadas de integración.
+Se propone incorporar:
 
-## 12. Pruebas realizadas en la implementación de referencia
+- Autenticación basada en JWT.
+- Verificación de tokens en rutas protegidas.
+- Autorización por usuario propietario de los recursos.
+- Limitación de solicitudes de autenticación.
+- Normalización integral de errores HTTP.
+- HTTPS para despliegue en producción.
+- Prevención de registros duplicados de sesiones.
+- Recuperación automática ante fallos parciales.
+- Mayor cobertura de pruebas automatizadas.
 
-Durante el desarrollo del backend original se realizaron pruebas funcionales con Postman y MongoDB Atlas.
+Estas mejoras no se consideran características implementadas del backend actual.
 
-Se verificaron:
+## 14. Integración con la PWA
 
-- Registro de usuarios y almacenamiento del hash Argon2id.
-- Inicio de sesión y emisión de JWT.
-- Normalización de correos electrónicos.
-- Rechazo de emails duplicados con HTTP `409`.
-- Rechazo de credenciales incorrectas con HTTP `401`.
-- Compatibilidad con usuarios anteriores a la implementación de autenticación.
-- Registro de partidas mediante Session Service.
-- Incremento acumulativo de estadísticas.
-- Conservación independiente de récords.
-- Rechazo de jugadores duplicados en una sesión.
-- Respuesta ante fallos parciales de sincronización.
+El backend está diseñado para proporcionar información que puede ser consumida por una PWA mediante endpoints remotos.
 
-Estos resultados corresponden a la implementación original probada. La versión integrada del repositorio debe validarse nuevamente si su configuración o lógica fue modificada.
+La integración permitirá:
 
-## 13. Alcance y estado del proyecto
+| Vista propuesta de la PWA | Endpoint de origen |
+|---|---|
+| Perfil | `GET /users/:id` |
+| Estadísticas | `GET /users/:id/stats` |
+| Leaderboard | `GET /users/leaderboard` |
+| Progreso | `GET /progress/:userId` |
+| Historial de partidas | `GET /sessions/user/:userId` |
+| Resumen de reparaciones | `GET /sessions/user/:userId/summary` |
 
-El backend proporciona los servicios necesarios para gestionar la identidad, las estadísticas, el progreso y las sesiones de Fix IT!.
+La responsabilidad del backend consiste en validar operaciones, aplicar reglas de negocio y proporcionar información estructurada mediante JSON.
 
-Su arquitectura permite que una PWA consuma datos remotos mediante solicitudes HTTP y los represente dinámicamente en sus interfaces.
+La PWA será responsable de recuperar estos datos, procesarlos y representarlos mediante componentes visuales.
 
-El uso de JWT para proteger las operaciones, la consulta general del historial, el leaderboard y la recuperación automática ante fallos forman parte de funcionalidades pendientes o sujetas a verificación en la versión integrada.
+Para garantizar una experiencia adecuada, la interfaz deberá contemplar los estados de carga, error, información vacía y actualización de resultados.
 
-Esta documentación describe la arquitectura de referencia del backend y sus contratos conocidos. Cualquier funcionalidad incorporada posteriormente deberá contrastarse con el código fuente antes de considerarse parte de la implementación actual.
+Las funcionalidades de instalación, diseño responsivo, Web App Manifest, Service Worker y almacenamiento de recursos estáticos pertenecen a la arquitectura de la PWA y se documentan en el README general del proyecto.
+
+## 15. Alcance y conclusión
+
+El backend de Fix IT! proporciona una arquitectura de servicios REST destinada a administrar usuarios, progreso, estadísticas e información histórica de las partidas.
+
+Los endpoints existentes permiten recuperar colecciones de datos estructurados y proporcionan las bases para construir listas dinámicas de jugadores, resultados y reparaciones dentro de la PWA.
+
+La separación entre User Service, Progress Service y Session Service facilita la organización de responsabilidades y la evolución de las funciones del sistema.
+
+La propuesta de integración satisface el objetivo académico de definir cómo una Aplicación Web Progresiva puede consumir APIs remotas para obtener y representar información de manera dinámica.
+
+Las funcionalidades pendientes y las limitaciones de implementación se identifican para diferenciar el alcance actual del backend de posibles mejoras posteriores.
