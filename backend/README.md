@@ -569,19 +569,35 @@ Los endpoints de salud permiten comprobar que cada aplicación responde a solici
 
 ### 12.5 Datos de demostración
 
-User Service dispone del comando:
+El backend incluye `scripts/data_init.js` para preparar un estado inicial reproducible del laboratorio. El script limpia los registros de prueba anteriores y después inserta usuarios, estadísticas, progreso, sesiones y noticias relacionadas entre sí.
+
+Desde la carpeta `backend/`, instalar las dependencias de las herramientas y ejecutar:
 
 ```powershell
-npm run seed
+Copy-Item .env.example .env
+npm install
+npm run data:init
 ```
 
-Este script crea datos de demostración para el proyecto.
+La carga genera:
 
-**Advertencia:** el script elimina y vuelve a insertar determinados datos de demostración en las colecciones utilizadas por su conexión MongoDB.
+- Cinco usuarios con estadísticas calculadas desde sus sesiones.
+- Ocho sesiones individuales y cooperativas.
+- Un documento de progreso por usuario con sus mejores resultados.
+- Tres noticias para comprobar `GET /news`.
+- La contraseña compartida `Fixit123` para las cuentas de laboratorio.
+
+Para eliminar solamente los datos generados, sin volver a insertarlos:
+
+```powershell
+npm run data:clean
+```
+
+La conexión utiliza `MONGO_URI` y, cuando no está definida, emplea `mongodb://127.0.0.1:27017/fixit`.
+
+**Advertencia:** antes de cargar información, el script elimina las cuentas e identificadores reservados para el laboratorio y sus sesiones o progresos asociados.
 
 No debe ejecutarse sobre información importante sin revisar previamente su comportamiento y el destino configurado.
-
-Cuando los microservicios utilizan bases lógicas diferentes, el script no inicializa automáticamente todas las bases de los demás servicios.
 
 ## 13. Seguridad
 
