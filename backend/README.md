@@ -4,11 +4,11 @@
 
 **Fix IT!** es un proyecto integrador orientado al aprendizaje del diagnóstico, mantenimiento y reparación de equipos de cómputo mediante una experiencia de videojuego cooperativo.
 
-El backend proporciona los servicios necesarios para administrar usuarios, autenticar credenciales, registrar sesiones de juego, almacenar estadísticas y consultar el progreso de los jugadores.
+El backend proporciona los servicios necesarios para administrar usuarios, autenticar credenciales, registrar sesiones de juego, almacenar estadísticas, consultar el progreso de los jugadores y publicar noticias del videojuego.
 
 Como parte de la propuesta de una **Aplicación Web Progresiva (PWA)**, el backend expone una API REST que permite recuperar información en formato JSON para su representación dinámica en una interfaz web.
 
-La solución utiliza una arquitectura basada en tres microservicios desarrollados con **Node.js, Express y Mongoose**, utilizando MongoDB para la persistencia de datos.
+La solución utiliza una arquitectura basada en cuatro microservicios desarrollados con **Node.js, Express y Mongoose**, utilizando MongoDB para la persistencia de datos.
 
 ## 2. Objetivo de la arquitectura
 
@@ -17,7 +17,7 @@ Diseñar y documentar una arquitectura de servicios REST que permita conectar un
 - Recuperación de datos mediante solicitudes HTTP.
 - Intercambio de información en formato JSON.
 - Consulta de perfiles, estadísticas, progreso y resultados.
-- Obtención de listas dinámicas de jugadores y sesiones.
+- Obtención de listas dinámicas de jugadores, sesiones y noticias.
 - Separación de responsabilidades entre microservicios.
 - Persistencia de información mediante MongoDB.
 
@@ -25,13 +25,14 @@ Esta arquitectura permite que la PWA obtenga datos del backend y actualice su in
 
 ## 3. Arquitectura del backend
 
-El sistema se organiza en tres microservicios independientes, cada uno con responsabilidades específicas.
+El sistema se organiza en cuatro microservicios independientes, cada uno con responsabilidades específicas.
 
 | Microservicio | Puerto predeterminado | Responsabilidad |
 |---|---|---|
 | User Service | `3001` | Registro, inicio de sesión, perfiles, estadísticas acumuladas y clasificación de jugadores. |
 | Progress Service | `3002` | Consulta y actualización del progreso de los jugadores. |
 | Session Service | `3003` | Registro histórico de sesiones, consulta de partidas y generación de resúmenes. |
+| News Service | `3004` | Publicación y consulta de noticias y novedades del videojuego. |
 
 ### 3.1 Diagrama de arquitectura
 
@@ -40,11 +41,12 @@ El sistema se organiza en tres microservicios independientes, cada uno con respo
                               |
                          HTTP / JSON
                               |
-               +--------------+--------------+
-               |              |              |
-               v              v              v
-          User Service   Progress Service  Session Service
-             :3001            :3002           :3003
+          +----------+----------+----------+----------+
+          |          |          |          |
+          v          v          v          v
+       User       Progress    Session      News
+      Service     Service     Service     Service
+       :3001       :3002       :3003       :3004
                ^                                |
                |                                |
                +--------- HTTP / REST ----------+
@@ -112,13 +114,14 @@ Los servicios también utilizan validación de datos. Su ubicación concreta dep
 
 ## 5. Modelo de persistencia
 
-La persistencia utiliza MongoDB y tres colecciones principales.
+La persistencia utiliza MongoDB y cuatro colecciones principales.
 
 | Colección | Microservicio responsable | Información almacenada |
 |---|---|---|
 | `users` | User Service | Usuarios, credenciales protegidas y estadísticas. |
 | `user_progress` | Progress Service | Progreso organizado por mundos y niveles. |
 | `game_sessions` | Session Service | Historial y resultados de las partidas. |
+| `news` | News Service | Noticias y novedades publicadas por el equipo. |
 
 La configuración del servidor y de la base de datos se establece mediante `MONGO_URI`. Por lo tanto, el backend puede utilizar una instancia MongoDB local o remota, siempre que las conexiones estén correctamente configuradas.
 
@@ -212,12 +215,15 @@ La aplicación cliente podrá utilizar los datos recibidos para mostrar perfiles
 | GET | `/health` | Consultar el estado del servicio. |
 | POST | `/users/register` | Registrar un nuevo usuario. |
 | POST | `/users/login` | Verificar credenciales e iniciar sesión. |
+| GET | `/users` | Recuperar todos los usuarios con su nombre y estadísticas. |
 | GET | `/users/:id` | Consultar el perfil de un jugador. |
 | GET | `/users/:id/stats` | Recuperar estadísticas acumuladas. |
 | PATCH | `/users/:id/stats` | Incrementar estadísticas del jugador. |
 | GET | `/users/leaderboard` | Recuperar la clasificación de jugadores. |
 
 El endpoint de leaderboard devuelve hasta 20 jugadores, ordenados principalmente por puntuación acumulada (`totalScore`) y posteriormente por tickets completados (`totalTicketsCompleted`), ambos en orden descendente.
+
+El endpoint general de usuarios devuelve todos los jugadores con `_id`, `username` y `stats`, sin exponer el correo ni el hash de contraseña. También se ordena por puntuación y tickets completados para facilitar la construcción de una clasificación general en la PWA.
 
 El resultado permite construir una tabla o lista dinámica de clasificación.
 
@@ -259,6 +265,26 @@ El endpoint de resumen proporciona información agrupada en:
 La información `weekly` agrupa las sesiones históricas por día de la semana; no representa exclusivamente la semana calendario actual.
 
 Actualmente, el backend no implementa un endpoint general `GET /sessions` sin identificador de usuario.
+
+### 6.4 News Service
+
+**URL local predeterminada:** `http://localhost:3004`
+
+| Método | Endpoint | Función |
+|---|---|---|
+| GET | `/health` | Consultar el estado del servicio. |
+| GET | `/news` | Recuperar las noticias ordenadas desde la publicación más reciente. |
+| POST | `/news` | Publicar una nueva noticia o novedad. |
+
+El registro de una noticia requiere `title` y `content`. El campo `author` es opcional y utiliza `Equipo Fix IT!` como valor predeterminado.
+
+```json
+{
+  "title": "Nuevo mundo disponible",
+  "content": "Ya puedes explorar nuevos niveles y reparaciones.",
+  "author": "Equipo Fix IT!"
+}
+```
 
 ## 7. Propuesta de recuperación y renderizado dinámico
 
@@ -470,13 +496,13 @@ Los microservicios utilizan variables de entorno para configurar sus conexiones 
 
 | Variable | Servicios | Función |
 |---|---|---|
-| `MONGO_URI` | User, Progress, Session | Cadena de conexión a MongoDB. |
-| `PORT` | User, Progress, Session | Puerto de ejecución. |
-| `FRONTEND_URL` | User, Progress, Session | Origen permitido por la configuración CORS. |
+| `MONGO_URI` | User, Progress, Session, News | Cadena de conexión a MongoDB. |
+| `PORT` | User, Progress, Session, News | Puerto de ejecución. |
+| `FRONTEND_URL` | User, Progress, Session, News | Origen permitido por la configuración CORS. |
 | `USER_SERVICE_URL` | Session | Dirección HTTP de User Service. |
 | `PROGRESS_SERVICE_URL` | Session | Dirección HTTP de Progress Service. |
 
-Los tres servicios incluyen configuración CORS para permitir solicitudes desde el origen establecido mediante `FRONTEND_URL`.
+Los cuatro servicios incluyen configuración CORS para permitir solicitudes desde el origen establecido mediante `FRONTEND_URL`.
 
 Las direcciones utilizadas durante el desarrollo pueden apuntar a `localhost`. Para un despliegue remoto se deberán configurar direcciones accesibles y conexiones seguras.
 
@@ -503,7 +529,7 @@ cd user-service
 npm install
 ```
 
-Repetir el procedimiento para `progress-service` y `session-service`.
+Repetir el procedimiento para `progress-service`, `session-service` y `news-service`.
 
 ### 12.3 Ejecución
 
@@ -526,6 +552,7 @@ Los puertos predeterminados son:
 | User Service | `3001` |
 | Progress Service | `3002` |
 | Session Service | `3003` |
+| News Service | `3004` |
 
 ### 12.4 Comprobación de servicios
 
@@ -535,6 +562,7 @@ La disponibilidad HTTP puede consultarse mediante:
 GET http://localhost:3001/health
 GET http://localhost:3002/health
 GET http://localhost:3003/health
+GET http://localhost:3004/health
 ```
 
 Los endpoints de salud permiten comprobar que cada aplicación responde a solicitudes HTTP, aunque no necesariamente realizan una comprobación de conectividad a MongoDB en cada petición.
@@ -594,9 +622,11 @@ La integración permitirá:
 | Perfil | `GET /users/:id` |
 | Estadísticas | `GET /users/:id/stats` |
 | Leaderboard | `GET /users/leaderboard` |
+| Leaderboard general | `GET /users` |
 | Progreso | `GET /progress/:userId` |
 | Historial de partidas | `GET /sessions/user/:userId` |
 | Resumen de reparaciones | `GET /sessions/user/:userId/summary` |
+| Noticias y novedades | `GET /news` |
 
 La responsabilidad del backend consiste en validar operaciones, aplicar reglas de negocio y proporcionar información estructurada mediante JSON.
 
@@ -608,11 +638,11 @@ Las funcionalidades de instalación, diseño responsivo, Web App Manifest, Servi
 
 ## 15. Alcance y conclusión
 
-El backend de Fix IT! proporciona una arquitectura de servicios REST destinada a administrar usuarios, progreso, estadísticas e información histórica de las partidas.
+El backend de Fix IT! proporciona una arquitectura de servicios REST destinada a administrar usuarios, progreso, estadísticas, noticias e información histórica de las partidas.
 
 Los endpoints existentes permiten recuperar colecciones de datos estructurados y proporcionan las bases para construir listas dinámicas de jugadores, resultados y reparaciones dentro de la PWA.
 
-La separación entre User Service, Progress Service y Session Service facilita la organización de responsabilidades y la evolución de las funciones del sistema.
+La separación entre User Service, Progress Service, Session Service y News Service facilita la organización de responsabilidades y la evolución de las funciones del sistema.
 
 La propuesta de integración satisface el objetivo académico de definir cómo una Aplicación Web Progresiva puede consumir APIs remotas para obtener y representar información de manera dinámica.
 
