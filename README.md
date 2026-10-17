@@ -225,3 +225,9 @@ Después pueden insertarse en esta sección mediante Markdown.
 - Para una versión de producción se recomienda incorporar JWT, expiración de sesión, validación más estricta, rate limiting, HTTPS y una política CORS específica para el dominio desplegado.
 
 
+
+## Documentación
+
+- [Ver documentación en PDF](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.pdf)
+- [Descargar documento editable en Word](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.docx)
+
