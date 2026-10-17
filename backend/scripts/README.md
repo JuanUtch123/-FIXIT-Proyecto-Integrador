@@ -15,7 +15,7 @@ Puede ejecutarse repetidas veces. Cada carga comienza limpiando los datos de lab
 
 - Node.js 22 o posterior.
 - npm.
-- Una instancia de MongoDB accesible.
+- Clave de acceso hacia el cluster en atlas.
 - Permisos de lectura y escritura sobre la base configurada.
 
 Los microservicios no necesitan estar ejecutándose para cargar o limpiar la información. MongoDB sí debe estar disponible.
