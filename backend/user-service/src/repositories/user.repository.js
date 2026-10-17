@@ -13,6 +13,11 @@ const findUserByEmail = async (email) => User.findOne({ email: email.toLowerCase
 
 const createUser = async (userData) => User.create(userData);
 
+const findAllUsersWithStats = async () =>
+  User.find()
+    .select("username stats")
+    .sort({ "stats.totalScore": -1, "stats.totalTicketsCompleted": -1 });
+
 const findLeaderboard = async (limit = 20) =>
   User.find()
     .select("username stats createdAt")
@@ -47,4 +52,4 @@ const updateUserStats = async (userId, statsData) => {
   return updatedUser;
 };
 
-export { createUser, findLeaderboard, findUserByEmail, findUserByEmailWithPassword, findUserById, findUserStatsById, updateUserStats };
+export { createUser, findAllUsersWithStats, findLeaderboard, findUserByEmail, findUserByEmailWithPassword, findUserById, findUserStatsById, updateUserStats };

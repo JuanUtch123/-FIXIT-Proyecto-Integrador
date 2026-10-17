@@ -218,16 +218,25 @@ Agregar en `docs/` capturas con nombres descriptivos, por ejemplo:
 
 Después pueden insertarse en esta sección mediante Markdown.
 
-## Seguridad y alcance actual
+### Seguridad y alcance actual del backend
 
-- Las contraseñas deben permanecer cifradas en la base de datos.
-- No deben versionarse `.env`, `node_modules`, compilaciones ni archivos con secretos.
-- Para una versión de producción se recomienda incorporar JWT, expiración de sesión, validación más estricta, rate limiting, HTTPS y una política CORS específica para el dominio desplegado.
+User Service implementa registro y autenticación de usuarios mediante contraseñas protegidas con Argon2id. Durante el inicio de sesión se emiten tokens JWT firmados mediante HS256 y con tiempo de expiración configurable.
 
+La validación de los JWT para autorizar solicitudes a endpoints protegidos constituye una fase posterior del desarrollo.
 
+ 
 
 ## Documentación
 
 - [Ver documentación en PDF](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.pdf)
 - [Descargar documento editable en Word](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.docx)
+
 - [Ver evidencias del backend y la base de datos](docs/documentacion/Evidencias_Backend_Base_Datos.pdf)
+
+
+
+Las variables sensibles, como las cadenas de conexión a MongoDB y los secretos de firma, deben mantenerse fuera del repositorio mediante archivos `.env` excluidos del control de versiones.
+
+Para un despliegue en producción se contempla implementar autorización de recursos, limitación de solicitudes, políticas CORS restringidas y conexiones HTTPS.
+ 
+
