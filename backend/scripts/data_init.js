@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const scrypt = promisify(scryptCallback);
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
-const DEFAULT_MONGO_URI = "mongodb://127.0.0.1:27017/fixit";
+const DEFAULT_MONGO_URI = "mongodb://127.0.0.1:27017/fixit"; // ojo
 const LAB_PASSWORD = "Fixit123";
 
 const playerDefinitions = [
