@@ -231,8 +231,12 @@ La validación de los JWT para autorizar solicitudes a endpoints protegidos cons
 - [Ver documentación en PDF](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.pdf)
 - [Descargar documento editable en Word](docs/documentacion/Propuesta_Arquitectura_PWA_FixIT.docx)
 
+- [Ver evidencias del backend y la base de datos](docs/documentacion/Evidencias_Backend_Base_Datos.pdf)
+
+
 
 Las variables sensibles, como las cadenas de conexión a MongoDB y los secretos de firma, deben mantenerse fuera del repositorio mediante archivos `.env` excluidos del control de versiones.
 
 Para un despliegue en producción se contempla implementar autorización de recursos, limitación de solicitudes, políticas CORS restringidas y conexiones HTTPS.
  
+
