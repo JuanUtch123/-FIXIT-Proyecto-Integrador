@@ -5,6 +5,7 @@ import { promisify } from "node:util";
 import {
   findUserById,
   findUserStatsById,
+  findAllUsersWithStats,
   updateUserStats,
   createUser,
   findLeaderboard,
@@ -59,6 +60,8 @@ const loginUser = async ({ email, password }) => {
 };
 
 const getLeaderboard = async () => findLeaderboard();
+
+const getUsers = async () => findAllUsersWithStats();
 
 const getUserById = async (userId) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -167,4 +170,4 @@ const incrementUserStats = async (userId, statsData) => {
   return updatedUser;
 };
 
-export { getLeaderboard, getUserById, getUserStatsById, incrementUserStats, loginUser, registerUser };
+export { getLeaderboard, getUserById, getUsers, getUserStatsById, incrementUserStats, loginUser, registerUser };

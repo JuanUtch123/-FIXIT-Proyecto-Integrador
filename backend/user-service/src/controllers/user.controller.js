@@ -1,5 +1,6 @@
 import {
   getUserById,
+  getUsers,
   getUserStatsById,
   incrementUserStats,
   getLeaderboard,
@@ -20,6 +21,16 @@ const login = async (req, res) => {
 const leaderboard = async (_req, res) => {
   try { res.status(200).json(await getLeaderboard()); }
   catch (error) { res.status(500).json({ error: error.message || "Internal server error" }); }
+};
+
+const getAllUsers = async (_req, res) => {
+  try {
+    res.status(200).json(await getUsers());
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Internal server error",
+    });
+  }
 };
 
 const getUser = async (req, res) => {
@@ -65,4 +76,4 @@ const updateUserStats = async (req, res) => {
   }
 };
 
-export { getUser, getUserStats, leaderboard, login, register, updateUserStats };
+export { getAllUsers, getUser, getUserStats, leaderboard, login, register, updateUserStats };

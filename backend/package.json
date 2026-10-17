@@ -1,0 +1,15 @@
+{
+  "name": "fixit-backend-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Data provisioning tools for the Fix IT! backend",
+  "type": "module",
+  "scripts": {
+    "data:init": "node scripts/data_init.js",
+    "data:clean": "node scripts/data_init.js --clean-only"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongoose": "^9.10.0"
+  }
+}

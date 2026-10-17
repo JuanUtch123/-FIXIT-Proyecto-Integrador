@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   getUser,
+  getAllUsers,
   getUserStats,
   updateUserStats,
   leaderboard,
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/", getAllUsers);
 router.get("/leaderboard", leaderboard);
 
 router.get("/:id", getUser);
