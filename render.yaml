@@ -1,0 +1,70 @@
+services:
+  - type: web
+    name: fixit-user-service
+    runtime: node
+    rootDir: backend/user-service
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: MONGO_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: fixit-progress-service
+    runtime: node
+    rootDir: backend/progress-service
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: MONGO_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: fixit-session-service
+    runtime: node
+    rootDir: backend/session-service
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: MONGO_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: USER_SERVICE_URL
+        fromService:
+          type: web
+          name: fixit-user-service
+          property: hostport
+      - key: PROGRESS_SERVICE_URL
+        fromService:
+          type: web
+          name: fixit-progress-service
+          property: hostport
+
+  - type: web
+    name: fixit-news-service
+    runtime: node
+    rootDir: backend/news-service
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: MONGO_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
