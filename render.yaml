@@ -2,6 +2,7 @@ services:
   - type: web
     name: fixit-user-service
     runtime: node
+    plan: free
     rootDir: backend/user-service
     buildCommand: npm ci --omit=dev
     startCommand: npm start
@@ -11,12 +12,15 @@ services:
         value: 24.22.1
       - key: MONGO_URI
         sync: false
+      - key: JWT_SECRET
+        sync: false
       - key: FRONTEND_URL
         sync: false
 
   - type: web
     name: fixit-progress-service
     runtime: node
+    plan: free
     rootDir: backend/progress-service
     buildCommand: npm ci --omit=dev
     startCommand: npm start
@@ -32,6 +36,7 @@ services:
   - type: web
     name: fixit-session-service
     runtime: node
+    plan: free
     rootDir: backend/session-service
     buildCommand: npm ci --omit=dev
     startCommand: npm start
@@ -57,6 +62,7 @@ services:
   - type: web
     name: fixit-news-service
     runtime: node
+    plan: free
     rootDir: backend/news-service
     buildCommand: npm ci --omit=dev
     startCommand: npm start
