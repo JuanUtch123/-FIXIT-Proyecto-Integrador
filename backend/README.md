@@ -1,5 +1,7 @@
 # Fix IT! — Backend REST API
 
+Consulta [DEPLOYMENT.md](DEPLOYMENT.md) para preparar MongoDB Atlas y desplegar los cuatro servicios por separado en Render.
+
 ## 1. Descripción del proyecto
 
 **Fix IT!** es un proyecto integrador orientado al aprendizaje del diagnóstico, mantenimiento y reparación de equipos de cómputo mediante una experiencia de videojuego cooperativo.
