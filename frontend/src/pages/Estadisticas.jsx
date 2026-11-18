@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Bell, ChartNoAxesCombined, CheckCircle2, ChevronDown, Clock3, Home, Laptop, Star, Trophy, UserRound, LogOut } from "lucide-react";
+import { ChartNoAxesCombined, CheckCircle2, ChevronDown, Timer, Home, LaptopMinimalCheck, Sparkles, Trophy, UserRound, LogOut } from "lucide-react";
 import "../styles/perfil.css";
 import "../styles/dashboard.css";
 import { useAuth } from "../context/auth";
@@ -30,9 +30,9 @@ function Estadisticas() {
     <div className="dash-titulo"><h1>Estadísticas</h1><p>Revisa tu progreso y el impacto de tus reparaciones.</p></div>
     {error && <p className="api-error">{error}</p>}
     <section className="metricas">
-      <article><Laptop/><div><span>Laptops reparadas</span><strong>{stats.totalTicketsCompleted || 0}</strong></div></article>
-      <article><Star className="estrella"/><div><span>Estrellas totales</span><strong>{stats.totalStars || 0}</strong></div></article>
-      <article><Clock3/><div><span>Tiempo jugado</span><strong>{formatTime(stats.totalPlayTimeSeconds)}</strong></div></article>
+      <article><span className="metrica-icono metrica-reparadas" aria-hidden="true"><LaptopMinimalCheck/></span><div><span>Laptops reparadas</span><strong>{stats.totalTicketsCompleted || 0}</strong></div></article>
+      <article><span className="metrica-icono metrica-estrellas" aria-hidden="true"><Sparkles/></span><div><span>Estrellas totales</span><strong>{stats.totalStars || 0}</strong></div></article>
+      <article><span className="metrica-icono metrica-tiempo" aria-hidden="true"><Timer/></span><div><span>Tiempo jugado</span><strong>{formatTime(stats.totalPlayTimeSeconds)}</strong></div></article>
     </section>
     <section className="graficas-grid">
       <article className="dash-panel"><h2>Progreso por semana</h2><div className="grafica-barras"><div className="eje"><span>{maxBarra}</span><span>{Math.round(maxBarra*.66)}</span><span>{Math.round(maxBarra*.33)}</span><span>0</span></div><div className="barras">{barras.map((valor,i)=><div className="barra-col" key={dias[i]}><div className="barra" style={{height:`${valor/maxBarra*100}%`}}/><span>{dias[i]}</span></div>)}</div></div></article>

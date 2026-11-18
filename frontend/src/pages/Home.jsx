@@ -9,7 +9,6 @@ import "../styles/home.css";
 import { useAuth } from "../context/auth";
 import { usePlayerData } from "../hooks/usePlayerData";
 import { formatTime, levelPercent, playerLevel } from "../utils/player";
-import InstallPWA from "../components/InstallPWA";
 
 const pasos = [
   {
@@ -32,6 +31,7 @@ const pasos = [
     titulo: "Completa la reparación",
     texto: "Instala el componente, termina la misión y gana experiencia.",
     imagen: "/images/paso-reparacion2.png",
+    encuadre: "paso-imagen-reparacion",
   },
 ];
 function Home() {
@@ -62,7 +62,7 @@ function Home() {
           </div>
 
           <div className="topbar-acciones">
-            <InstallPWA />
+
 
             <img
               src="/images/networkGuyConOjos.png"
@@ -112,7 +112,22 @@ function Home() {
 
           <section className="como-jugar" id="como-jugar">
             <div className="seccion-heading"><span>CÓMO FUNCIONA</span><h2>Tu camino para dominar<br/>la reparación técnica</h2><p>Cada misión te plantea un problema diferente. Observa, decide y aplica tus conocimientos.</p></div>
-<div className="pasos-grid">{pasos.map(({ numero, Icono, titulo, texto, imagen }) => <article className="paso-card" key={numero}><span className="paso-numero">{numero}</span><div className="paso-encabezado"><div className="paso-icono"><Icono /></div><h3>{titulo}</h3></div><div className="paso-imagen-contenedor"><img src={imagen} alt={titulo} className="paso-imagen" loading="lazy" /></div><p>{texto}</p></article>)}</div>          </section>
+            <div className="pasos-grid">
+              {pasos.map(({ Icono, titulo, texto, imagen, encuadre }, index) => (
+                <article className="paso-card" key={titulo}>
+                  <div className="paso-meta">
+                    <div className="paso-icono"><Icono aria-hidden="true" /></div>
+                    <span className="paso-numero">PASO {String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3>{titulo}</h3>
+                  <div className="paso-imagen-contenedor">
+                    <img src={imagen} alt={titulo} className={`paso-imagen ${encuadre || ""}`} loading="lazy" />
+                  </div>
+                  <p>{texto}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
 <section className="home-cta"><div className="cta-contenido"><span>¿LISTO PARA EL RETO?</span><h2>La próxima reparación<br />depende de ti.</h2><p>Entra al taller, completa una misión y mejora tu posición en el leaderboard.</p><Link to="/estadisticas">Ver mi progreso<ChevronRight /></Link></div><div className="cta-visual"><div className="cta-resplandor"></div><img src="/images/banner-personajes.png" alt="Equipo técnico de Fix IT" className="cta-personajes" loading="lazy" /></div></section>
           <footer className="fixit-footer">
