@@ -4,7 +4,7 @@
   "description": "Microservice responsible for game sessions and telemetry",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

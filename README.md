@@ -40,7 +40,7 @@ El proyecto presenta una propuesta completa de arquitectura e interfaz para una 
 - Node.js
 - Express
 - Mongoose
-- Arquitectura basada en tres servicios REST
+- Arquitectura basada en cuatro servicios REST independientes
 
 ### Base de datos
 
@@ -65,7 +65,8 @@ FIXIT-Proyecto-Integrador/
 ├── backend/
 │   ├── user-service/           # Usuarios, autenticación y leaderboard
 │   ├── progress-service/       # Progreso del jugador
-│   └── session-service/        # Sesiones y resultados de juego
+│   ├── session-service/        # Sesiones y resultados de juego
+│   └── news-service/           # Noticias del videojuego
 ├── docs/                       # Capturas y documentación adicional
 ├── .gitignore
 └── README.md
@@ -111,10 +112,14 @@ Las rutas privadas requieren un usuario autenticado. El diseño adapta sus tarje
 
 ## Requisitos previos
 
-- Node.js 18 o posterior.
+- Node.js 20.19.0 o posterior para los microservicios del backend.
 - npm.
 - MongoDB ejecutándose localmente.
 - Chrome o Edge para probar la instalación de la PWA.
+
+## Despliegue del backend
+
+El backend contiene cuatro servicios independientes y cuenta con un Blueprint para Render. Las instrucciones completas de variables, MongoDB Atlas, despliegue y verificación están en [backend/DEPLOYMENT.md](backend/DEPLOYMENT.md). Los endpoints de escritura actuales no tienen autorización; revisa la sección de seguridad antes de publicar datos reales.
 
 ## Configuración
 
@@ -159,7 +164,18 @@ Copy-Item .env.example .env
 npm run dev
 ```
 
-### 5. Ejecutar el frontend
+### 5. Configurar News Service (si se requiere)
+
+En otra terminal:
+
+```powershell
+cd backend\news-service
+npm ci
+Copy-Item .env.example .env
+npm run dev
+```
+
+### 6. Ejecutar el frontend
 
 En otra terminal, desde la raíz del proyecto:
 
@@ -220,9 +236,9 @@ Después pueden insertarse en esta sección mediante Markdown.
 
 ### Seguridad y alcance actual del backend
 
-User Service implementa registro y autenticación de usuarios mediante contraseñas protegidas con Argon2id. Durante el inicio de sesión se emiten tokens JWT firmados mediante HS256 y con tiempo de expiración configurable.
+User Service implementa registro y validación de credenciales mediante contraseñas protegidas con scrypt y una sal aleatoria. El login devuelve los datos públicos del usuario; actualmente no emite JWT ni establece una sesión verificable por el backend.
 
-La validación de los JWT para autorizar solicitudes a endpoints protegidos constituye una fase posterior del desarrollo.
+La autenticación de solicitudes y los permisos sobre las rutas de lectura y escritura siguen pendientes. Antes de publicar el backend para usuarios reales se deben implementar y verificar estas protecciones. Consulta backend/DEPLOYMENT.md para la configuración de despliegue y las limitaciones actuales.
 
  
 

@@ -64,7 +64,7 @@ Desde la vista del clúster:
 La URI tendrá una estructura similar a esta:
 
 ```text
-mongodb+srv://USUARIO:CONTRASEÑA@cluster0.xxxxx.mongodb.net/fixit_lab?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://<DB_USER>:<DB_PASSWORD>@<CLUSTER_HOST>/<DATABASE>
 ```
 
 Debe sustituir:
@@ -100,7 +100,7 @@ notepad .env
 Reemplace su contenido con la URI de Atlas:
 
 ```env
-MONGO_URI=mongodb+srv://USUARIO:CONTRASEÑA@cluster0.xxxxx.mongodb.net/fixit_lab?retryWrites=true&w=majority&appName=Cluster0
+MONGO_URI=mongodb+srv://<DB_USER>:<DB_PASSWORD>@<CLUSTER_HOST>/<DATABASE>
 ```
 
 Guarde y cierre el editor.
@@ -199,7 +199,7 @@ mongosh --version
 Para conectarse sin escribir la contraseña directamente en el comando:
 
 ```powershell
-mongosh "mongodb+srv://cluster0.xxxxx.mongodb.net/fixit_lab" --username USUARIO
+mongosh "mongodb+srv://<DB_USER>:<DB_PASSWORD>@<CLUSTER_HOST>/<DATABASE>" --username USUARIO
 ```
 
 `mongosh` solicitará la contraseña de manera interactiva.
@@ -254,7 +254,7 @@ Abra cada archivo y reemplace únicamente `MONGO_URI` con la misma URI de `fixit
 Por ejemplo, `user-service/.env` debe conservar una estructura similar a:
 
 ```env
-MONGO_URI=mongodb+srv://USUARIO:CONTRASEÑA@cluster0.xxxxx.mongodb.net/fixit_lab?retryWrites=true&w=majority&appName=Cluster0
+MONGO_URI=mongodb+srv://<DB_USER>:<DB_PASSWORD>@<CLUSTER_HOST>/<DATABASE>
 PORT=3001
 FRONTEND_URL=http://localhost:5173
 ```
@@ -378,7 +378,7 @@ Si aparece `Authentication failed`:
 La URI no contiene el nombre de la base. Debe tener `/fixit_lab` antes de los parámetros:
 
 ```text
-mongodb+srv://USUARIO:CONTRASEÑA@cluster0.xxxxx.mongodb.net/fixit_lab?retryWrites=true&w=majority
+mongodb+srv://<DB_USER>:<DB_PASSWORD>@<CLUSTER_HOST>/<DATABASE>
 ```
 
 ### Los servicios no encuentran los datos
