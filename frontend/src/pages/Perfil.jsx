@@ -61,7 +61,7 @@ function Perfil() {
             <section className="panel tarjeta-jugador">
               <div className="avatar-grande">
                 <div className="avatar-resplandor" />
-                <img src="/images/networkGuy2.png" alt="Personaje Network Guy" />
+                <img src="/images/networkGuyConOjos.png" alt="Personaje Network Guy" />
               </div>
               <div className="datos-jugador">
                 <h2>{user?.username || "Jugador"}</h2><h3>Nivel {nivel}</h3>

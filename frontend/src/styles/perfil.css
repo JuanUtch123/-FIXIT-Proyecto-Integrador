@@ -34,6 +34,36 @@
 .perfil-contenido { width: calc(100% - 260px); min-width: 0; margin-left: 260px; }
 .perfil-topbar { height: 84px; display: flex; align-items: center; justify-content: flex-end; gap: 13px; padding: 0 40px; border-bottom: 1px solid rgba(24,133,179,.38); background: rgba(1,22,39,.28); }
 .perfil-topbar img { width: 50px; height: 50px; margin-left: 24px; border: 1px solid #00bff3; border-radius: 50%; object-fit: cover; background: #11435d; }
+.topbar-acciones {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  margin-left: auto;
+}
+
+.topbar-acciones img {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  flex-shrink: 0;
+  border: 1px solid #00bff3;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #11435d;
+}
+
+.topbar-acciones .topbar-usuario {
+  display: grid;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.topbar-acciones .flecha {
+  margin-left: 7px;
+  flex-shrink: 0;
+}
 .notificacion { position: relative; display: grid; place-items: center; border: 0; color: #00d8ff; background: transparent; cursor: pointer; }
 .notificacion svg { width: 29px; height: 29px; }
 .notificacion span { position: absolute; top: 0; right: 1px; width: 10px; height: 10px; border-radius: 50%; background: #ff3159; }

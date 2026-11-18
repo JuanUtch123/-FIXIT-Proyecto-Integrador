@@ -136,7 +136,7 @@ function Login() {
           {/* PERSONAJE */}
 
           <img
-            src="/images/networkGuy2.png"
+            src="/images/networkGuyConOjos.png"
             alt="Network Guy"
             className="network-guy"
           />

@@ -9,13 +9,31 @@ import "../styles/home.css";
 import { useAuth } from "../context/auth";
 import { usePlayerData } from "../hooks/usePlayerData";
 import { formatTime, levelPercent, playerLevel } from "../utils/player";
+import InstallPWA from "../components/InstallPWA";
 
 const pasos = [
-  { numero: "01", Icono: Laptop, titulo: "Elige un equipo", texto: "Selecciona la computadora que necesita reparación." },
-  { numero: "02", Icono: Wrench, titulo: "Resuelve el problema", texto: "Identifica la falla y aplica la solución correcta." },
-  { numero: "03", Icono: Trophy, titulo: "Gana experiencia", texto: "Completa tickets, consigue puntos y sube de nivel." },
+  {
+  
+    Icono: Laptop,
+    titulo: "Busca el componente",
+    texto: "Explora el almacén y selecciona la pieza solicitada.",
+    imagen: "/images/paso-almacen.png",
+  },
+  {
+   
+    Icono: Wrench,
+    titulo: "Identifica la pieza correcta",
+    texto: "Compara las piezas y elige la compatible con el equipo.",
+    imagen: "/images/paso-componentes.png",
+  },
+  {
+    
+    Icono: Trophy,
+    titulo: "Completa la reparación",
+    texto: "Instala el componente, termina la misión y gana experiencia.",
+    imagen: "/images/paso-reparacion2.png",
+  },
 ];
-
 function Home() {
   const { logout } = useAuth();
   const { user } = usePlayerData();
@@ -36,12 +54,34 @@ function Home() {
       </aside>
 
       <section className="perfil-contenido">
+        {/* Encabezado */}
         <header className="perfil-topbar home-topbar">
-          <div className="mini-marca"><Gamepad2/><span>Centro de misiones</span></div>
-          
-          <img src="/images/networkGuy2.png" alt="Avatar de Jugador1" />
-          <div className="topbar-usuario"><strong>{user?.username || "Jugador"}</strong><small>Nivel {nivel}</small></div>
-          
+          <div className="mini-marca">
+            <Gamepad2 />
+            <span>Centro de misiones</span>
+          </div>
+
+          <div className="topbar-acciones">
+            <InstallPWA />
+
+            <img
+              src="/images/networkGuyConOjos.png"
+              alt={`Avatar de ${user?.username || "Jugador"}`}
+            />
+
+            <div className="topbar-usuario">
+              <strong>
+                {user?.username || "Jugador"}
+              </strong>
+
+              <small>Nivel {nivel}</small>
+            </div>
+
+            <ChevronDown
+              className="flecha"
+              aria-hidden="true"
+            />
+          </div>
         </header>
 
         <main className="home-main">
@@ -61,7 +101,7 @@ function Home() {
             <div className="hero-visual">
               <div className="orbita orbita-uno"/><div className="orbita orbita-dos"/>
               <div className="resplandor-personaje"/>
-              <img src="/images/networkGuy2.png" alt="Personaje principal de Fix IT" className="hero-personaje"/>
+              <img src="/images/networkGuyConOjos.png" alt="Personaje principal de Fix IT" className="hero-personaje"/>
               <div className="tarjeta-flotante tarjeta-nivel"><Gauge/><div><span>Nivel {nivel}</span><strong>{porcentaje}% completado</strong></div></div>
               <div className="tarjeta-flotante tarjeta-ticket"><CircleCheck/><div><span>Último ticket</span><strong>¡Reparación exitosa!</strong></div></div>
               <div className="chip-flotante chip-uno"><Wrench/></div><div className="chip-flotante chip-dos"><ShieldCheck/></div>
@@ -72,11 +112,9 @@ function Home() {
 
           <section className="como-jugar" id="como-jugar">
             <div className="seccion-heading"><span>CÓMO FUNCIONA</span><h2>Tu camino para dominar<br/>la reparación técnica</h2><p>Cada misión te plantea un problema diferente. Observa, decide y aplica tus conocimientos.</p></div>
-            <div className="pasos-grid">{pasos.map(({numero,Icono,titulo,texto})=><article key={numero}><span className="paso-numero">{numero}</span><div className="paso-icono"><Icono/></div><h3>{titulo}</h3></article>)}</div>
-          </section>
+<div className="pasos-grid">{pasos.map(({ numero, Icono, titulo, texto, imagen }) => <article className="paso-card" key={numero}><span className="paso-numero">{numero}</span><div className="paso-encabezado"><div className="paso-icono"><Icono /></div><h3>{titulo}</h3></div><div className="paso-imagen-contenedor"><img src={imagen} alt={titulo} className="paso-imagen" loading="lazy" /></div><p>{texto}</p></article>)}</div>          </section>
 
-          <section className="home-cta"><div><span>¿LISTO PARA EL RETO?</span><h2>La próxima reparación<br/>depende de ti.</h2><p>Entra al taller, completa una misión y mejora tu posición en el leaderboard.</p><Link to="/estadisticas">Ver mi progreso <ChevronRight/></Link></div></section>
-
+<section className="home-cta"><div className="cta-contenido"><span>¿LISTO PARA EL RETO?</span><h2>La próxima reparación<br />depende de ti.</h2><p>Entra al taller, completa una misión y mejora tu posición en el leaderboard.</p><Link to="/estadisticas">Ver mi progreso<ChevronRight /></Link></div><div className="cta-visual"><div className="cta-resplandor"></div><img src="/images/banner-personajes.png" alt="Equipo técnico de Fix IT" className="cta-personajes" loading="lazy" /></div></section>
           <footer className="fixit-footer">
             <div className="footer-principal">
               <div className="footer-marca"><img src="/images/Logo2.png" alt="Fix IT!"/><p>Aprende a diagnosticar y reparar computadoras mientras completas misiones y mejoras tus habilidades.</p></div>
