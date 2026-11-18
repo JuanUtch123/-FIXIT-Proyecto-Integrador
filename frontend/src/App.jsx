@@ -13,13 +13,13 @@ import Home from "./pages/Home";
 import Estadisticas from "./pages/Estadisticas";
 import Leaderboard from "./pages/Leaderboard";
 import Perfil from "./pages/Perfil";
-import InstallPWA from "./components/InstallPWA";
+
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <InstallPWA />
+        
 
         <Routes>
           <Route path="/" element={<Login />} />

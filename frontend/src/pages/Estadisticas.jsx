@@ -14,7 +14,7 @@ function Navegacion({ activo, logout }) {
   </aside>;
 }
 
-function Encabezado({ user }) { return <header className="perfil-topbar"><img src="/images/networkGuy2.png" alt="Avatar"/><div className="topbar-usuario"><strong>{user?.username || "Jugador"}</strong><small>Nivel {playerLevel(user?.stats?.totalScore)}</small></div><ChevronDown className="flecha"/></header>; }
+function Encabezado({ user }) { return <header className="perfil-topbar"><img src="/images/networkGuyConOjos.png" alt="Avatar"/><div className="topbar-usuario"><strong>{user?.username || "Jugador"}</strong><small>Nivel {playerLevel(user?.stats?.totalScore)}</small></div><ChevronDown className="flecha"/></header>; }
 
 function Estadisticas() {
   const { logout } = useAuth();
