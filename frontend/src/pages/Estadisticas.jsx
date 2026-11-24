@@ -1,3 +1,4 @@
+import WikiNavLink from "../components/WikiNavLink";
 import { NavLink } from "react-router-dom";
 import { ChartNoAxesCombined, CheckCircle2, ChevronDown, Timer, Home, LaptopMinimalCheck, Sparkles, Trophy, UserRound, LogOut } from "lucide-react";
 import "../styles/perfil.css";
@@ -10,7 +11,7 @@ const dias = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 
 function Navegacion({ activo, logout }) {
   return <aside className="perfil-sidebar"><img src="/images/Logo2.png" alt="Fix IT!" className="perfil-logo" />
-    <nav className="perfil-nav"><NavLink to="/home"><Home/><span>Inicio</span></NavLink><NavLink to="/estadisticas" className={activo === "estadisticas" ? "activo" : ""}><ChartNoAxesCombined/><span>Estadísticas</span></NavLink><NavLink to="/leaderboard"><Trophy/><span>Leaderboard</span></NavLink><NavLink to="/perfil"><UserRound/><span>Perfil</span></NavLink></nav><NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink>
+    <nav className="perfil-nav"><NavLink to="/home"><Home/><span>Inicio</span></NavLink><NavLink to="/estadisticas" className={activo === "estadisticas" ? "activo" : ""}><ChartNoAxesCombined/><span>Estadísticas</span></NavLink><NavLink to="/leaderboard"><Trophy/><span>Leaderboard</span></NavLink><NavLink to="/perfil"><UserRound/><span>Perfil</span></NavLink><WikiNavLink /></nav><NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink>
   </aside>;
 }
 

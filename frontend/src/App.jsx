@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Estadisticas from "./pages/Estadisticas";
 import Leaderboard from "./pages/Leaderboard";
 import Perfil from "./pages/Perfil";
+import Wiki from "./pages/Wiki";
 
 
 function App() {
@@ -59,6 +60,8 @@ function App() {
               </Protected>
             }
           />
+
+          <Route path="/wiki" element={<Protected><Wiki /></Protected>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

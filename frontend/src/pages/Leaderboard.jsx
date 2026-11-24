@@ -1,3 +1,4 @@
+import WikiNavLink from "../components/WikiNavLink";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Bell, ChartNoAxesCombined, ChevronDown, Clock3, Crown, Eye, Home, Search, Trophy, UserRound, LogOut } from "lucide-react";
@@ -15,7 +16,7 @@ function Leaderboard() {
   const posicion = jugadores.findIndex((j) => j._id === user?._id) + 1;
   const actual = jugadores.find((j) => j._id === user?._id) || user;
   const score = actual?.stats?.totalScore || 0;
-  return <div className="perfil-page"><aside className="perfil-sidebar"><img src="/images/Logo2.png" alt="Fix IT!" className="perfil-logo"/><nav className="perfil-nav"><NavLink to="/home"><Home/><span>Inicio</span></NavLink><NavLink to="/estadisticas"><ChartNoAxesCombined/><span>Estadísticas</span></NavLink><NavLink to="/leaderboard" className="activo"><Trophy/><span>Leaderboard</span></NavLink><NavLink to="/perfil"><UserRound/><span>Perfil</span></NavLink></nav><NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink></aside>
+  return <div className="perfil-page"><aside className="perfil-sidebar"><img src="/images/Logo2.png" alt="Fix IT!" className="perfil-logo"/><nav className="perfil-nav"><NavLink to="/home"><Home/><span>Inicio</span></NavLink><NavLink to="/estadisticas"><ChartNoAxesCombined/><span>Estadísticas</span></NavLink><NavLink to="/leaderboard" className="activo"><Trophy/><span>Leaderboard</span></NavLink><NavLink to="/perfil"><UserRound/><span>Perfil</span></NavLink><WikiNavLink /></nav><NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink></aside>
     <section className="perfil-contenido"><header className="perfil-topbar"><img src="/images/networkGuyConOjos.png" alt="Avatar"/><div className="topbar-usuario"><strong>{user?.username}</strong><small>Nivel {playerLevel(score)}</small></div><ChevronDown className="flecha"/></header>
     <main className="dash-main"><div className="leader-titulo"><div><h1>Leaderboard</h1><p>Compite, mejora tus tiempos y alcanza el primer lugar.</p></div><button aria-label="Buscar"><Search/></button></div>
       {error && <p className="api-error">{error}</p>}

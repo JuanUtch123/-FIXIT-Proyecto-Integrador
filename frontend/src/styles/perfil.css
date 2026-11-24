@@ -124,7 +124,7 @@
   .perfil-page { display: block; }
   .perfil-sidebar { position: sticky; top: 0; width: 100%; height: auto; padding: 8px 14px; border-right: 0; border-bottom: 1px solid rgba(16,146,201,.42); display:grid;grid-template-columns:1fr auto;align-items:center; }
   .perfil-logo { width: 120px; height: 50px; margin: 0; }
-  .perfil-nav { grid-column:1/-1;grid-row:2;grid-template-columns: repeat(4,1fr); gap: 6px; }
+  .perfil-nav { grid-column:1/-1;grid-row:2;grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; }
   .cerrar-sesion { grid-column:2;grid-row:1;min-height:40px;margin:0;padding:0 12px;font-size:13px; }
   .perfil-nav a { min-height: 45px; justify-content: center; gap: 7px; padding: 0 6px; font-size: 14px; } .perfil-nav a svg { width: 20px; height: 20px; }
   .perfil-contenido { width: 100%; margin-left: 0; } .perfil-topbar { height: 68px; padding: 0 18px; }

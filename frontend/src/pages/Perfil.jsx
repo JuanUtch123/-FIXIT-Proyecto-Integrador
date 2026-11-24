@@ -1,3 +1,4 @@
+import WikiNavLink from "../components/WikiNavLink";
 import { NavLink } from "react-router-dom";
 import {
   Bell, ChevronDown, CircleCheck, CircleX, Clock3, Crown, Home, Medal,
@@ -38,7 +39,7 @@ function Perfil() {
           <NavLink to="/perfil" className={({ isActive }) => (isActive ? "activo" : "")}>
             <UserRound aria-hidden="true" /><span>Perfil</span>
           </NavLink>
-        </nav>
+        <WikiNavLink /></nav>
         <NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink>
       </aside>
 
