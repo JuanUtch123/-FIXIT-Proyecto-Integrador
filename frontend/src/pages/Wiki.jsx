@@ -48,7 +48,7 @@ export default function Wiki() {
             </button>)}
           </div>
           <article id="character-details" className="wiki-dossier" style={{ "--character-color": character.color }} aria-labelledby="character-name">
-            <div className="wiki-dossier-intro"><span className="wiki-eyebrow">EXPEDIENTE / {character.role}</span><h3 id="character-name">{character.name}<span>{character.alias}</span></h3><p>{character.summary}</p><span className="wiki-playable"><Users size={15} aria-hidden="true" /> Personaje jugable</span></div>
+            <div className="wiki-dossier-intro"><img className="wiki-dossier-portrait" src={character.image} alt={`Retrato de ${character.name}, ${character.alias}`} /><span className="wiki-eyebrow">EXPEDIENTE / {character.role}</span><h3 id="character-name">{character.name}<span>{character.alias}</span></h3><p>{character.summary}</p><span className="wiki-playable"><Users size={15} aria-hidden="true" /> Personaje jugable</span></div>
             <div className="wiki-dossier-copy"><h4>Su personalidad</h4><p>{character.personality}</p><h4>Su historia en Fix It Corp</h4><p>{character.story}</p></div>
           </article>
         </section>

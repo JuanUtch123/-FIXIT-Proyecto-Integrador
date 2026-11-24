@@ -6,7 +6,7 @@ La ruta protegida `/wiki` reúne la información de los personajes y las guías 
 
 - `frontend/src/data/wiki.js` contiene las fichas de Alan, Steve, Mark y Bill, adaptadas del documento proporcionado **Fix It — Personajes (Wiki).pdf**. El documento menciona personajes no jugables, pero no desarrolla sus fichas; por eso no se añadieron personajes sin información.
 - Las ilustraciones del tutorial provienen de `tutorial.zip` (cuatro láminas) y `pere_new.zip` (un esquema general). Los PNG se convirtieron a WebP para disminuir su peso, conservando las ilustraciones completas. Los originales PSD no se publican en la PWA.
-- Mark utiliza la ilustración Network Guy que ya estaba en el proyecto. Los otros personajes se representan con monogramas hasta disponer de sus retratos oficiales.
+- Los cuatro personajes utilizan los retratos JPEG proporcionados por el usuario, conservados sin alterar en frontend/public/wiki. Se muestran en la tarjeta de selección y en la ficha del personaje.
 
 ## Interacción
 

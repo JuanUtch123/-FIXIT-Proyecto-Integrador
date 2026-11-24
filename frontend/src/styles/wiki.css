@@ -24,7 +24,7 @@
 .wiki-character:hover { border-color: var(--character-color); }
 .wiki-character-portrait { display: grid; place-items: center; height: 110px; margin-bottom: 18px; }
 .wiki-character-portrait > span { display: grid; place-items: center; width: 80px; height: 80px; border: 1px solid var(--character-color); border-radius: 26px; color: var(--character-color); background: #061d30; font-size: 25px; font-weight: 800; letter-spacing: -.04em; transform: rotate(-5deg); }
-.wiki-character-portrait img { height: 110px; max-width: 100%; object-fit: contain; }
+.wiki-character-portrait img { width: 110px; height: 110px; max-width: 100%; object-fit: contain; border-radius: 18px; background: #f7f7f7; }
 .wiki-character-name { display: block; font-weight: 800; font-size: 21px; }
 .wiki-character-alias { display: block; margin-top: 5px; color: #a4bdcd; font-size: 12px; }
 .wiki-character-index { position: absolute; top: 12px; right: 14px; color: #5b8297; font-size: 11px; }
@@ -79,3 +79,5 @@
   .wiki-page .cerrar-sesion { min-width: 44px; padding: 0; }
   .wiki-page .cerrar-sesion span { display: none; }
 }
+
+.wiki-dossier-portrait { display: block; width: min(100%, 230px); aspect-ratio: 1; object-fit: contain; margin: 0 auto 24px; border: 1px solid var(--character-color); border-radius: 20px; background: #f7f7f7; }
