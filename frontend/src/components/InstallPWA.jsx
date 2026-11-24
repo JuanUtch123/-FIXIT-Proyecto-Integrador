@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { MonitorDown, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../context/auth";
 import { consumeInstallPrompt, getInstallPrompt, subscribeInstallPrompt } from "../services/pwaInstall";
 
 function InstallPWA() {
+  const { user } = useAuth();
+  const { pathname } = useLocation();
   const installPrompt = useSyncExternalStore(subscribeInstallPrompt, getInstallPrompt);
   const [instalada, setInstalada] = useState(false);
   const instructions = useRef(null);
@@ -41,7 +45,7 @@ function InstallPWA() {
     }
   };
 
-  if (instalada) return null;
+  if (instalada || !user || pathname === "/") return null;
 
   return (
     <>

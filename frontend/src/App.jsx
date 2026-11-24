@@ -14,12 +14,14 @@ import Estadisticas from "./pages/Estadisticas";
 import Leaderboard from "./pages/Leaderboard";
 import Perfil from "./pages/Perfil";
 import Wiki from "./pages/Wiki";
+import InstallPWA from "./components/InstallPWA";
 
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <InstallPWA />
         
 
         <Routes>
