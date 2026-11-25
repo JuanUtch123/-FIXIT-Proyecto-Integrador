@@ -35,8 +35,19 @@ export default function Wiki() {
           <div className="wiki-eyebrow"><span /> MANUAL DEL TALLER · VOL. 01</div>
           <h1 id="wiki-title">Conoce al equipo.<br /><em>Domina el taller.</em></h1>
           <p>Bienvenido al departamento de TI de Fix It Corp. Conoce a quienes mantienen todo en marcha y aprende a resolver el próximo desastre.</p>
-          <div className="wiki-hero-actions"><a href="#personajes"><Users aria-hidden="true" /> Los personajes <ArrowDown aria-hidden="true" /></a><a href="#tutorial">Cómo jugar <ArrowUpRight aria-hidden="true" /></a></div>
+          <div className="wiki-hero-actions"><a href="#personajes"><Users aria-hidden="true" /> Los personajes <ArrowDown aria-hidden="true" /></a><a href="#tutorial">Cómo jugar <ArrowUpRight aria-hidden="true" /></a><a href="#trailer">Ver tráiler <ArrowUpRight aria-hidden="true" /></a></div>
           <div className="wiki-hero-note"><span>04 / PERSONAJES</span><span>05 / GUÍAS VISUALES</span><span>01 / EQUIPO</span></div>
+        </section>
+
+        <section id="trailer" className="wiki-section" aria-labelledby="trailer-title">
+          <div className="wiki-section-heading"><div><span className="wiki-eyebrow">EN PANTALLA / FIX IT!</span><h2 id="trailer-title">Un vistazo al caos del taller</h2></div><p id="trailer-description">Dale play al tráiler del juego y conoce el mundo de Fix IT! antes de comenzar tu próxima misión.</p></div>
+          <div className="wiki-trailer">
+            <video controls playsInline preload="metadata" aria-label="Tráiler del juego Fix IT!" aria-describedby="trailer-description">
+              <source src="/wiki/trailer-fixit.mp4" type="video/mp4" />
+              Tu navegador no permite reproducir este video. Puedes abrirlo con el enlace que aparece debajo.
+            </video>
+            <div className="wiki-trailer-caption"><span>FIX IT! / TRÁILER DEL JUEGO</span><a href="/wiki/trailer-fixit.mp4" target="_blank" rel="noopener noreferrer">Abrir video <ArrowUpRight size={16} aria-hidden="true" /></a></div>
+          </div>
         </section>
 
         <section id="personajes" className="wiki-section" aria-labelledby="characters-title">

@@ -18,3 +18,7 @@ La ruta protegida `/wiki` reúne la información de los personajes y las guías 
 ## Comprobaciones
 
 La compilación del frontend y el lint se ejecutan con `npm run build` y `npm run lint` desde `frontend`. También se comprobó con navegador automatizado la selección de las cuatro fichas, la carga de las cinco imágenes, el carrusel, el diálogo y Escape, los enlaces desde las cuatro vistas existentes y la ausencia de desbordamiento horizontal a 390 y 768 px. Las pruebas de navegación utilizaron respuestas API simuladas, sin modificar usuarios ni partidas.
+
+## Tráiler
+
+La sección incluye el video proporcionado por el usuario en `frontend/public/wiki/trailer-fixit.mp4`. Se reproduce mediante controles nativos, sin reproducción automática, con `playsInline` y precarga de metadatos. Se conserva el MP4 original y se ofrece un enlace para abrirlo directamente.
