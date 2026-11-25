@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ArrowDown, ArrowUpRight, BookOpen, ChartNoAxesCombined, ChevronLeft, ChevronRight, Home, LogOut, Maximize2, Trophy, UserRound, Users, X } from "lucide-react";
 import { useAuth } from "../context/auth";
 import WikiNavLink from "../components/WikiNavLink";
@@ -9,6 +9,15 @@ import "../styles/wiki.css";
 
 export default function Wiki() {
   const { logout } = useAuth();
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash]);
   const [selected, setSelected] = useState(characters[0].id);
   const [slide, setSlide] = useState(0);
   const viewer = useRef(null);

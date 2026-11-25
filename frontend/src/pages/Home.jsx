@@ -2,7 +2,7 @@ import WikiNavLink from "../components/WikiNavLink";
 import { NavLink, Link } from "react-router-dom";
 import {
   Bell, ChartNoAxesCombined, ChevronDown, ChevronRight, CircleCheck,
-  Gamepad2, Gauge, Home as HomeIcon, Laptop, Play, ShieldCheck,
+  Gamepad2, Gauge, Home as HomeIcon, Laptop, BookOpen, ShieldCheck,
   Sparkles, Trophy, UserRound, Wrench, LogOut, MessageCircle,
 } from "lucide-react";
 import "../styles/perfil.css";
@@ -93,7 +93,7 @@ function Home() {
               <h1>Conviértete en un<br/><span>experto en reparación</span></h1>
               <p>Fix IT! es un juego interactivo donde diagnosticas fallas, reparas computadoras y acumulas experiencia mientras desarrollas habilidades técnicas.</p>
               <div className="hero-acciones">
-                <button className="boton-jugar"><Play/> Comenzar misión</button>
+                <Link to="/wiki#tutorial" className="boton-jugar"><BookOpen aria-hidden="true" /> Ver tutorial</Link>
                 <a href="#como-jugar" className="boton-conocer">Conocer el juego <ChevronRight/></a>
               </div>
               <div className="hero-datos"><div><strong>{stats.totalTicketsCompleted || 0}</strong><span>reparaciones</span></div><div><strong>{stats.totalScore || 0}</strong><span>puntos ganados</span></div><div><strong>{formatTime(stats.totalPlayTimeSeconds)}</strong><span>de práctica</span></div></div>
