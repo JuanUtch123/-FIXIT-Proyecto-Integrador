@@ -13,13 +13,16 @@ import Home from "./pages/Home";
 import Estadisticas from "./pages/Estadisticas";
 import Leaderboard from "./pages/Leaderboard";
 import Perfil from "./pages/Perfil";
+import Wiki from "./pages/Wiki";
 import InstallPWA from "./components/InstallPWA";
+
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <InstallPWA />
+
 
         <Routes>
           <Route path="/" element={<Login />} />
@@ -59,6 +62,8 @@ function App() {
               </Protected>
             }
           />
+
+          <Route path="/wiki" element={<Protected><Wiki /></Protected>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

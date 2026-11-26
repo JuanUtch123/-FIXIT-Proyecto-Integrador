@@ -236,9 +236,9 @@ Después pueden insertarse en esta sección mediante Markdown.
 
 ### Seguridad y alcance actual del backend
 
-User Service implementa registro y autenticación de usuarios mediante contraseñas protegidas con Argon2id. Durante el inicio de sesión se emiten tokens JWT firmados mediante HS256 y con tiempo de expiración configurable.
+User Service implementa registro y validación de credenciales mediante contraseñas protegidas con scrypt y una sal aleatoria. El login devuelve los datos públicos del usuario; actualmente no emite JWT ni establece una sesión verificable por el backend.
 
-La validación de los JWT para autorizar solicitudes a endpoints protegidos constituye una fase posterior del desarrollo.
+La autenticación de solicitudes y los permisos sobre las rutas de lectura y escritura siguen pendientes. Antes de publicar el backend para usuarios reales se deben implementar y verificar estas protecciones. Consulta backend/DEPLOYMENT.md para la configuración de despliegue y las limitaciones actuales.
 
  
 

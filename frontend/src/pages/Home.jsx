@@ -1,7 +1,8 @@
+import WikiNavLink from "../components/WikiNavLink";
 import { NavLink, Link } from "react-router-dom";
 import {
   Bell, ChartNoAxesCombined, ChevronDown, ChevronRight, CircleCheck,
-  Gamepad2, Gauge, Home as HomeIcon, Laptop, Play, ShieldCheck,
+  Gamepad2, Gauge, Home as HomeIcon, Laptop, BookOpen, ShieldCheck,
   Sparkles, Trophy, UserRound, Wrench, LogOut, MessageCircle,
 } from "lucide-react";
 import "../styles/perfil.css";
@@ -11,11 +12,29 @@ import { usePlayerData } from "../hooks/usePlayerData";
 import { formatTime, levelPercent, playerLevel } from "../utils/player";
 
 const pasos = [
-  { numero: "01", Icono: Laptop, titulo: "Elige un equipo", texto: "Selecciona la computadora que necesita reparación." },
-  { numero: "02", Icono: Wrench, titulo: "Resuelve el problema", texto: "Identifica la falla y aplica la solución correcta." },
-  { numero: "03", Icono: Trophy, titulo: "Gana experiencia", texto: "Completa tickets, consigue puntos y sube de nivel." },
-];
+  {
 
+    Icono: Laptop,
+    titulo: "Busca el componente",
+    texto: "Explora el almacén y selecciona la pieza solicitada.",
+    imagen: "/images/paso-almacen.png",
+  },
+  {
+
+    Icono: Wrench,
+    titulo: "Identifica la pieza correcta",
+    texto: "Compara las piezas y elige la compatible con el equipo.",
+    imagen: "/images/paso-componentes.png",
+  },
+  {
+
+    Icono: Trophy,
+    titulo: "Completa la reparación",
+    texto: "Instala el componente, termina la misión y gana experiencia.",
+    imagen: "/images/paso-reparacion2.png",
+    encuadre: "paso-imagen-reparacion",
+  },
+];
 function Home() {
   const { logout } = useAuth();
   const { user } = usePlayerData();
@@ -31,17 +50,39 @@ function Home() {
           <NavLink to="/estadisticas"><ChartNoAxesCombined/><span>Estadísticas</span></NavLink>
           <NavLink to="/leaderboard"><Trophy/><span>Leaderboard</span></NavLink>
           <NavLink to="/perfil"><UserRound/><span>Perfil</span></NavLink>
-        </nav>
+        <WikiNavLink /></nav>
         <NavLink to="/" replace className="cerrar-sesion" onClick={logout}><LogOut/><span>Cerrar sesión</span></NavLink>
       </aside>
 
       <section className="perfil-contenido">
+        {/* Encabezado */}
         <header className="perfil-topbar home-topbar">
-          <div className="mini-marca"><Gamepad2/><span>Centro de misiones</span></div>
-          
-          <img src="/images/networkGuy2.png" alt="Avatar de Jugador1" />
-          <div className="topbar-usuario"><strong>{user?.username || "Jugador"}</strong><small>Nivel {nivel}</small></div>
-          
+          <div className="mini-marca">
+            <Gamepad2 />
+            <span>Centro de misiones</span>
+          </div>
+
+          <div className="topbar-acciones">
+
+
+            <img
+              src="/images/networkGuyConOjos.png"
+              alt={`Avatar de ${user?.username || "Jugador"}`}
+            />
+
+            <div className="topbar-usuario">
+              <strong>
+                {user?.username || "Jugador"}
+              </strong>
+
+              <small>Nivel {nivel}</small>
+            </div>
+
+            <ChevronDown
+              className="flecha"
+              aria-hidden="true"
+            />
+          </div>
         </header>
 
         <main className="home-main">
@@ -52,7 +93,7 @@ function Home() {
               <h1>Conviértete en un<br/><span>experto en reparación</span></h1>
               <p>Fix IT! es un juego interactivo donde diagnosticas fallas, reparas computadoras y acumulas experiencia mientras desarrollas habilidades técnicas.</p>
               <div className="hero-acciones">
-                <button className="boton-jugar"><Play/> Comenzar misión</button>
+                <Link to="/wiki#tutorial" className="boton-jugar"><BookOpen aria-hidden="true" /> Ver tutorial</Link>
                 <a href="#como-jugar" className="boton-conocer">Conocer el juego <ChevronRight/></a>
               </div>
               <div className="hero-datos"><div><strong>{stats.totalTicketsCompleted || 0}</strong><span>reparaciones</span></div><div><strong>{stats.totalScore || 0}</strong><span>puntos ganados</span></div><div><strong>{formatTime(stats.totalPlayTimeSeconds)}</strong><span>de práctica</span></div></div>
@@ -61,7 +102,7 @@ function Home() {
             <div className="hero-visual">
               <div className="orbita orbita-uno"/><div className="orbita orbita-dos"/>
               <div className="resplandor-personaje"/>
-              <img src="/images/networkGuy2.png" alt="Personaje principal de Fix IT" className="hero-personaje"/>
+              <img src="/images/networkGuyConOjos.png" alt="Personaje principal de Fix IT" className="hero-personaje"/>
               <div className="tarjeta-flotante tarjeta-nivel"><Gauge/><div><span>Nivel {nivel}</span><strong>{porcentaje}% completado</strong></div></div>
               <div className="tarjeta-flotante tarjeta-ticket"><CircleCheck/><div><span>Último ticket</span><strong>¡Reparación exitosa!</strong></div></div>
               <div className="chip-flotante chip-uno"><Wrench/></div><div className="chip-flotante chip-dos"><ShieldCheck/></div>
@@ -72,11 +113,24 @@ function Home() {
 
           <section className="como-jugar" id="como-jugar">
             <div className="seccion-heading"><span>CÓMO FUNCIONA</span><h2>Tu camino para dominar<br/>la reparación técnica</h2><p>Cada misión te plantea un problema diferente. Observa, decide y aplica tus conocimientos.</p></div>
-            <div className="pasos-grid">{pasos.map(({numero,Icono,titulo,texto})=><article key={numero}><span className="paso-numero">{numero}</span><div className="paso-icono"><Icono/></div><h3>{titulo}</h3></article>)}</div>
+            <div className="pasos-grid">
+              {pasos.map(({ Icono, titulo, texto, imagen, encuadre }, index) => (
+                <article className="paso-card" key={titulo}>
+                  <div className="paso-meta">
+                    <div className="paso-icono"><Icono aria-hidden="true" /></div>
+                    <span className="paso-numero">PASO {String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3>{titulo}</h3>
+                  <div className="paso-imagen-contenedor">
+                    <img src={imagen} alt={titulo} className={`paso-imagen ${encuadre || ""}`} loading="lazy" />
+                  </div>
+                  <p>{texto}</p>
+                </article>
+              ))}
+            </div>
           </section>
 
-          <section className="home-cta"><div><span>¿LISTO PARA EL RETO?</span><h2>La próxima reparación<br/>depende de ti.</h2><p>Entra al taller, completa una misión y mejora tu posición en el leaderboard.</p><Link to="/estadisticas">Ver mi progreso <ChevronRight/></Link></div></section>
-
+<section className="home-cta"><div className="cta-contenido"><span>¿LISTO PARA EL RETO?</span><h2>La próxima reparación<br />depende de ti.</h2><p>Entra al taller, completa una misión y mejora tu posición en el leaderboard.</p><Link to="/estadisticas">Ver mi progreso<ChevronRight /></Link></div><div className="cta-visual"><div className="cta-resplandor"></div><img src="/images/banner-personajes.png" alt="Equipo técnico de Fix IT" className="cta-personajes" loading="lazy" /></div></section>
           <footer className="fixit-footer">
             <div className="footer-principal">
               <div className="footer-marca"><img src="/images/Logo2.png" alt="Fix IT!"/><p>Aprende a diagnosticar y reparar computadoras mientras completas misiones y mejoras tus habilidades.</p></div>

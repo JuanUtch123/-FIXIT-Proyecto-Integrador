@@ -34,6 +34,36 @@
 .perfil-contenido { width: calc(100% - 260px); min-width: 0; margin-left: 260px; }
 .perfil-topbar { height: 84px; display: flex; align-items: center; justify-content: flex-end; gap: 13px; padding: 0 40px; border-bottom: 1px solid rgba(24,133,179,.38); background: rgba(1,22,39,.28); }
 .perfil-topbar img { width: 50px; height: 50px; margin-left: 24px; border: 1px solid #00bff3; border-radius: 50%; object-fit: cover; background: #11435d; }
+.topbar-acciones {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  margin-left: auto;
+}
+
+.topbar-acciones img {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  flex-shrink: 0;
+  border: 1px solid #00bff3;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #11435d;
+}
+
+.topbar-acciones .topbar-usuario {
+  display: grid;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.topbar-acciones .flecha {
+  margin-left: 7px;
+  flex-shrink: 0;
+}
 .notificacion { position: relative; display: grid; place-items: center; border: 0; color: #00d8ff; background: transparent; cursor: pointer; }
 .notificacion svg { width: 29px; height: 29px; }
 .notificacion span { position: absolute; top: 0; right: 1px; width: 10px; height: 10px; border-radius: 50%; background: #ff3159; }
@@ -94,7 +124,7 @@
   .perfil-page { display: block; }
   .perfil-sidebar { position: sticky; top: 0; width: 100%; height: auto; padding: 8px 14px; border-right: 0; border-bottom: 1px solid rgba(16,146,201,.42); display:grid;grid-template-columns:1fr auto;align-items:center; }
   .perfil-logo { width: 120px; height: 50px; margin: 0; }
-  .perfil-nav { grid-column:1/-1;grid-row:2;grid-template-columns: repeat(4,1fr); gap: 6px; }
+  .perfil-nav { grid-column:1/-1;grid-row:2;grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; }
   .cerrar-sesion { grid-column:2;grid-row:1;min-height:40px;margin:0;padding:0 12px;font-size:13px; }
   .perfil-nav a { min-height: 45px; justify-content: center; gap: 7px; padding: 0 6px; font-size: 14px; } .perfil-nav a svg { width: 20px; height: 20px; }
   .perfil-contenido { width: 100%; margin-left: 0; } .perfil-topbar { height: 68px; padding: 0 18px; }
